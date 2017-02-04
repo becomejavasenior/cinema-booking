@@ -3,7 +3,7 @@ package com.example;
 /*
  *
  */
-public class PurchaseTicketService {
+public class PurchaseTicketServiceTest {
 
   /**
   * getSeatsForSession
