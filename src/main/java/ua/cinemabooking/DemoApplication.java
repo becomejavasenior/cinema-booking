@@ -14,11 +14,6 @@ import javax.annotation.PostConstruct;
 public class DemoApplication {
 
 
-	@PostConstruct
-	public  void  init() {
-		System.out.println("ok");
-		new Populator().init();
-	}
 
 
 	public static void main(String[] args) {
