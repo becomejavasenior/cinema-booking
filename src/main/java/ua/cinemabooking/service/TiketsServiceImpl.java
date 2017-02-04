@@ -10,8 +10,6 @@ import ua.cinemabooking.repository.BillOrderRepository;
 import ua.cinemabooking.repository.MovieRepository;
 import ua.cinemabooking.repository.SeansRepository;
 import ua.cinemabooking.serviceModel.Seats;
-
-import javax.persistence.criteria.Order;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,29 +24,6 @@ public class TiketsServiceImpl implements  TiketsService {
     BillOrderRepository billOrderRepository;
     @Autowired
     MovieRepository movieRepository;
-    @Override
-    public Seats getAllSeats(Seans seans) {
-        List<BillOrder> orderList = billOrderRepository.findBySeans(seans);
-        List<Boolean> freeseats = new ArrayList<>();
-        for (int x = 0; x <10; x++) {
-            for (int y = 0; y <10 ; y++) {
-                Boolean resalt = true;
-                for (BillOrder order: orderList
-                     ) {
-                    if (order.getPlace().getX()==x && order.getPlace().getY()==y && order.isPayed())
-                        resalt = false;
-                }
-                freeseats.add(resalt);
-
-            }
-        }
-        Seats seats1= new Seats();
-        seats1.setMap(freeseats);
-        seats1.setPrice(seans.getMovie().getPrice());
-        seats1.setFilmDate(seans.getStart());
-        seats1.setFilmName(seans.getMovie().getName());
-        return seats1;
-    }
 
     @Override
     public BillOrder createOrder(Seans seans, String email, Place place) {
@@ -77,8 +52,35 @@ public class TiketsServiceImpl implements  TiketsService {
     }
 
     @Override
-    public List<Seans> seansList(Movie movie) {
+    public Seats getSeats(Long seansId) {
+        Seans seans = seansRepository.findOne(seansId);
+        List<BillOrder> orderList = billOrderRepository.findBySeans(seans);
+        List<Boolean> freeseats = new ArrayList<>();
+        for (int x = 0; x <10; x++) {
+            for (int y = 0; y <10 ; y++) {
+                Boolean resalt = true;
+                for (BillOrder order: orderList
+                        ) {
+                    if (order.getPlace().getX()==x && order.getPlace().getY()==y && order.isPayed())
+                        resalt = false;
+                }
+                freeseats.add(resalt);
+
+            }
+        }
+        Seats seats1= new Seats();
+        seats1.setMap(freeseats);
+        seats1.setPrice(seans.getMovie().getPrice());
+        seats1.setFilmDate(seans.getStart());
+        seats1.setFilmName(seans.getMovie().getName());
+        return seats1;
+    }
+
+    @Override
+    public List<Seans> seansList(Long movieId) {
+        Movie movie = movieRepository.findOne(movieId);
         List<Seans> seansList = seansRepository.findByMovie(movie);
         return seansList;
     }
+
 }
