@@ -17,7 +17,6 @@ public class ControllerView {
     @RequestMapping(value = "/afisha", method = RequestMethod.GET)
     public ResponseEntity<String> getAfisha(Model model){
 
-
         return new ResponseEntity<String>("/afisha.html", HttpStatus.OK);
     }
 
@@ -28,7 +27,7 @@ public class ControllerView {
         return new ResponseEntity<String>("/schedule.html", HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/seats/{filmId}/{seansId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/seats/{seansId}", method = RequestMethod.GET)
     public ResponseEntity<String> getSeats(Model model){
 
         return new ResponseEntity<String>("/seats.html", HttpStatus.OK);
