@@ -1,6 +1,7 @@
 package ua.cinemabooking.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import ua.cinemabooking.model.BillOrder;
 import ua.cinemabooking.model.Movie;
 import ua.cinemabooking.model.Place;
@@ -17,6 +18,7 @@ import java.util.List;
 /**
  * Created by Artem on 04.02.2017.
  */
+@Service
 public class TiketsServiceImpl implements  TiketsService {
     @Autowired
     SeansRepository seansRepository;
