@@ -1,4 +1,4 @@
-package com.example;
+package ua.cinemabooking.service;
 
 /*
  *
@@ -15,7 +15,7 @@ public class PurchaseTicketServiceTest {
 
   /**
    * getFilms()
-   * @return: List of films for the day;
+   * @return: List of films for the day or empty list;
    */
 
   /**
