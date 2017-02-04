@@ -1,3 +1,11 @@
+
+
+$('#getSeats').on('click', function(){
+    alert('Ждём бекенд')
+});
+
+
+
 let session = {
     price: 10,
     filmName: 'Name',
