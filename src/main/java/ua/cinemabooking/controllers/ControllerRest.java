@@ -1,6 +1,19 @@
 package ua.cinemabooking.controllers;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import ua.cinemabooking.model.Movie;
+import ua.cinemabooking.model.Seans;
+import ua.cinemabooking.service.TiketsService;
+import ua.cinemabooking.serviceModel.Seats;
+
+import java.util.List;
 
 /**
  * Created by macbookair on 04.02.17.
