@@ -29,7 +29,7 @@ public class TiketsServiceImpl implements  TiketsService {
     @Override
     public Seats getAllSeats(Seans seans) {
         List<BillOrder> orderList = billOrderRepository.findBySeans(seans);
-        List<Boolean> seats = new ArrayList<>();
+        List<Boolean> freeseats = new ArrayList<>();
         for (int x = 0; x <10; x++) {
             for (int y = 0; y <10 ; y++) {
                 Boolean resalt = true;
@@ -38,12 +38,12 @@ public class TiketsServiceImpl implements  TiketsService {
                     if (order.getPlace().getX()==x && order.getPlace().getY()==y && order.isPayed())
                         resalt = false;
                 }
-                seats.add(resalt);
+                freeseats.add(resalt);
 
             }
         }
         Seats seats1= new Seats();
-        seats1.setMap(seats);
+        seats1.setMap(freeseats);
         seats1.setPrice(seans.getMovie().getPrice());
         seats1.setFilmDate(seans.getStart());
         seats1.setFilmName(seans.getMovie().getName());
@@ -57,6 +57,7 @@ public class TiketsServiceImpl implements  TiketsService {
         billOrder.setEmail(email);
         billOrder.setPlace(place);
         billOrder.setPayed(false);
+        billOrderRepository.save(billOrder);
         return billOrder;
     }
 
@@ -65,6 +66,7 @@ public class TiketsServiceImpl implements  TiketsService {
         BillOrder billOrder1;
         billOrder1 = billOrder;
         billOrder1.setPayed(true);
+        billOrderRepository.save(billOrder1);
         return billOrder1;
     }
 
@@ -77,6 +79,6 @@ public class TiketsServiceImpl implements  TiketsService {
     @Override
     public List<Seans> seansList(Movie movie) {
         List<Seans> seansList = seansRepository.findByMovie(movie);
-        return null;
+        return seansList;
     }
 }
