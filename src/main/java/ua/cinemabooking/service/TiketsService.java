@@ -12,7 +12,6 @@ import java.util.List;
  * Created by Artem on 04.02.2017.
  */
 public interface TiketsService {
-    public Seats getAllSeats(Seans seans);
 
 
     public BillOrder createOrder(Seans seans, String email, Place place);
