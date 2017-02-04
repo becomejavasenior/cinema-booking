@@ -6,6 +6,7 @@ import ua.cinemabooking.model.Movie;
 import ua.cinemabooking.model.Place;
 import ua.cinemabooking.model.Seans;
 import ua.cinemabooking.repository.BillOrderRepository;
+import ua.cinemabooking.repository.MovieRepository;
 import ua.cinemabooking.repository.SeansRepository;
 import ua.cinemabooking.serviceModel.Seats;
 
@@ -21,6 +22,8 @@ public class TiketsServiceImpl implements  TiketsService {
     SeansRepository seansRepository;
     @Autowired
     BillOrderRepository billOrderRepository;
+    @Autowired
+    MovieRepository movieRepository;
     @Override
     public Seats getAllSeats(Seans seans) {
         List<BillOrder> orderList = billOrderRepository.findBySeans(seans);
@@ -57,16 +60,21 @@ public class TiketsServiceImpl implements  TiketsService {
 
     @Override
     public BillOrder afterPay(BillOrder billOrder) {
-        return null;
+        BillOrder billOrder1;
+        billOrder1 = billOrder;
+        billOrder1.setPayed(true);
+        return billOrder1;
     }
 
     @Override
     public List<Movie> movieList() {
-        return null;
+        List<Movie> movieList = (List<Movie>) movieRepository.findAll();
+        return movieList;
     }
 
     @Override
     public List<Seans> seansList(Movie movie) {
+        List<Seans> seansList = seansRepository.findByMovie(movie);
         return null;
     }
 }
