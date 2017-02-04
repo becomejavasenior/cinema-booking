@@ -14,12 +14,14 @@ import java.util.List;
 /**
  * Created by Artem on 04.02.2017.
  */
+
+
 public class TiketsServiceImpl implements  TiketsService {
     @Autowired
     SeansRepository seansRepository;
     @Override
     public Seats getAllSeats(Movie movie, Seans seans) {
-        List<Seans> seansList = seansRepository.findByMovie(movie).;
+        List<Seans> seansList = seansRepository.findByMovie(movie);
 
         return null;
     }
