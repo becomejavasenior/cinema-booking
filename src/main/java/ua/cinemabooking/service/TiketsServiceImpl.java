@@ -46,12 +46,17 @@ public class TiketsServiceImpl implements  TiketsService {
     }
 
     @Override
-    public Order createOrder(Seans seans, String email, Place place) {
-        return null;
+    public BillOrder createOrder(Seans seans, String email, Place place) {
+        BillOrder billOrder = new BillOrder();
+        billOrder.setSeans(seans);
+        billOrder.setEmail(email);
+        billOrder.setPlace(place);
+        billOrder.setPayed(false);
+        return billOrder;
     }
 
     @Override
-    public Order afterPay(BillOrder billOrder) {
+    public BillOrder afterPay(BillOrder billOrder) {
         return null;
     }
 

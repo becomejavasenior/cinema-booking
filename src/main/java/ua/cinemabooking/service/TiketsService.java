@@ -13,11 +13,11 @@ import java.util.List;
  * Created by Artem on 04.02.2017.
  */
 public interface TiketsService {
-    public Seats getAllSeats(Movie movie, Seans seans);
+    public Seats getAllSeats(Seans seans);
 
-    public Order createOrder(Seans seans, String email, Place place);
+    public BillOrder createOrder(Seans seans, String email, Place place);
 
-    public Order afterPay(BillOrder billOrder);
+    public BillOrder afterPay(BillOrder billOrder);
 
     public List<Movie> movieList();
 
