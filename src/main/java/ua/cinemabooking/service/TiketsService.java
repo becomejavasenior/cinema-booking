@@ -23,4 +23,15 @@ public interface TiketsService {
 
     public  List<Seans> seansList(Movie movie);
 
+
+
+    public Seats getSeats(Long seansId);
+
+    public  List<Seans> seansList(Long movieId);
+
+
+//    public Seans getAllOrderedSens(Long filmId, Long seansId);
+
+
+
 }
