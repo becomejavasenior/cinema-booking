@@ -6,7 +6,6 @@ import ua.cinemabooking.model.Place;
 import ua.cinemabooking.model.Seans;
 import ua.cinemabooking.serviceModel.Seats;
 
-import javax.persistence.criteria.Order;
 import java.util.List;
 
 /**
@@ -15,12 +14,16 @@ import java.util.List;
 public interface TiketsService {
     public Seats getAllSeats(Seans seans);
 
-    public Order createOrder(Seans seans, String email, Place place);
 
-    public Order afterPay(BillOrder billOrder);
+    public BillOrder createOrder(Seans seans, String email, Place place);
+
+    public BillOrder afterPay(BillOrder billOrder);
 
     public List<Movie> movieList();
 
-    public  List<Seans> seansList(Movie movie);
+    public Seats getSeats(Long seansId);
+
+    public  List<Seans> seansList(Long movieId);
+
 
 }
