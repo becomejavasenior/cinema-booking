@@ -20,7 +20,7 @@ import java.util.List;
  */
 
 
-@RestController("/")
+@RestController
 public class ControllerRest {
 
 

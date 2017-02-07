@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="../static/css/seats.css" th:src="@{/css/seats.css}"/>
+    <link href="../static/css/bootstrap.css" th:href="@{/css/bootstrap.css}" rel="stylesheet" type="text/css"/>
+    <!-- Custom CSS -->
+    <link href="../static/css/3-col-portfolio.css" th:href="@{/css/3-col-portfolio.css}" rel="stylesheet" type="text/css"/>
+
+</head>
+<body>
+
+<div class="demo">
+    <div id="seat-map">
+        <div class="front">SCREEN</div>
+    </div>
+    <div class="booking-details">
+        <p>Movie: <span> Gingerclown</span></p>
+        <p>Time: <span>November 3, 21:00</span></p>
+        <p>Seat: </p>
+        <ul id="selected-seats"></ul>
+        <p>Tickets: <span id="counter">0</span></p>
+        <p>Total: <b>$<span id="total">0</span></b></p>
+
+        <button class="checkout-button">BUY</button>
+
+        <div id="legend"></div>
+    </div>
+    <div style="clear:both"></div>
+</div>
+
+<!-- Bootstrap Core JavaScript -->
+<script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+
+<script type="text/javascript" src="../static/js/jquery-1.11.0.min.js" th:src="@{/js/jquery-1.11.0.min.js}"></script>
+<script type="text/javascript" src="../static/js/jquery.seat-charts.min.js" th:src="@{/js/jquery.seat-charts.min.js}"></script>
+
+<script type="text/javascript" src="../static/js/seats.js" th:src="@{js/seats.js}"></script>
+
+</body>
+</html>
