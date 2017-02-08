@@ -8,10 +8,10 @@ import java.util.List;
  * Created by Artem on 04.02.2017.
  */
 public class Seats {
-    List<Boolean> map;
-    BigDecimal price;
-    String filmName;
-    LocalDateTime filmDate;
+    private List<Boolean> map;
+    private BigDecimal price;
+    private String filmName;
+    private LocalDateTime filmDate;
 
     public List<Boolean> getMap() {
         return map;

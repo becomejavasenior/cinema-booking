@@ -56,7 +56,14 @@ public class Populator {
             Random r = new Random();
             List<Movie> all = (List<Movie>) movieRepository.findAll();
             int size = all.size();
-            Movie movie = movieRepository.findOne((long) r.nextInt(size));
+
+            //These lines were changed because tests have shown that simple random by range(10) is not working
+            Long maxId = Long.valueOf(movieRepository.getMaxCode());
+            Long minId = Long.valueOf(movieRepository.getMinCode());
+            Movie movie = movieRepository.findOne(minId + (long) r.nextInt((int) (maxId - minId + 1)));
+
+//            Movie movie = movieRepository.findOne((long) r.nextInt(size));
+
             seans.setMovie(movie);
             seansRepository.save(seans);
         }

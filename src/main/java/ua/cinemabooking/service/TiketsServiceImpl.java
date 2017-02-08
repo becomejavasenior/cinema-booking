@@ -19,11 +19,11 @@ import java.util.List;
 @Service
 public class TiketsServiceImpl implements  TiketsService {
     @Autowired
-    SeansRepository seansRepository;
+    private SeansRepository seansRepository;
     @Autowired
-    BillOrderRepository billOrderRepository;
+    private BillOrderRepository billOrderRepository;
     @Autowired
-    MovieRepository movieRepository;
+    private MovieRepository movieRepository;
 
     @Override
     public BillOrder createOrder(Seans seans, String email, Place place) {
