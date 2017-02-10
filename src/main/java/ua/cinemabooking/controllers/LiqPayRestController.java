@@ -2,6 +2,7 @@ package ua.cinemabooking.controllers;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,12 +26,10 @@ public class LiqPayRestController {
         this.liqPayService = liqPayService;
     }
 
-
-    @RequestMapping(value = "/account/getLiqPayParam", method = RequestMethod.POST)
+    @RequestMapping(value = "/account/getLiqPayParam", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public String[] getLiqPayParam(@RequestParam("email") String email, @RequestParam("amount") Integer amount, @RequestParam("seatId") String seatId) {
-
-        Map<String, String> result = liqPayService.liqPayGenerateParamForHtmlForm(email, amount, seatId);
+    public String[] getLiqPayParam(@RequestParam("email") String email, @RequestParam("amount") Integer amount) {
+        Map<String, String> result = liqPayService.liqPayGenerateParamForHtmlForm(email, amount);
         return new String[]{result.get("data"), result.get("signature")};
     }
 

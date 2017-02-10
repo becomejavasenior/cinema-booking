@@ -1,17 +1,50 @@
+(function () {
+
+    let locationPathName = window.location.pathname;
+    let n = locationPathName.lastIndexOf('/');
+    let filmId = locationPathName.substring(n + 1);
 
 
-$('#getSeats').on('click', function(){
-    alert('Ждём бекенд')
+    function getSession(filmId){
+        // let session = {};
+
+        $.ajax({
+            url: '/getSeats/' + filmId,
+            method: 'GET',
+            success: function(response) {
+                // session.price = response.price;
+                // session.filmId = filmId;
+                // session.filmName = response.filmName;
+                // session.filmDate = response.filmDate;
+                // session.map = response.map;
+                return response;
+            }
+        });
+    }
+
+    // let session = {
+    //     price: 50,
+    //     filmId : filmId,
+    //     filmName: 'Name',
+    //     filmDate: '01.01.2017',
+    //     map: [true, false, true, true, true, false, true, true, true, false, false, false, true, false, true, true, true, false, true, false]
+    // };
+
+
+    let session = getSession(filmId);
+
+$('#email-input').change(function(){
+    $.ajax({
+        url: '/api/rest/liqpay/account/getLiqPayParam',
+        method: 'POST',
+        data: {'email': $(this).val(), 'amount': session.price},
+        success: function(response) {
+            $('#liq-pay-data').val(response[0]);
+            $('#liq-pay-signature').val(response[1]);
+        }
+    });
 });
 
-
-
-let session = {
-    price: 10,
-    filmName: 'Name',
-    filmDate: '01.01.2017',
-    map: [true, false, true, true, true, false, true, true, true, false, false, false, true, false, true, true, true, false, true, false]
-};
 
 
 function getUnavailable(map) {
@@ -33,7 +66,6 @@ function getUnavailable(map) {
 }
 
 
-let price = 10; //price
 $(document).ready(function () {
     let $cart = $('#selected-seats'), //Sitting Area
         $counter = $('#counter'), //Votes
@@ -73,7 +105,7 @@ $(document).ready(function () {
                     .appendTo($cart);
 
                 $counter.text(sc.find('selected').length + 1);
-                $total.text(recalculateTotal(sc) + price);
+                $total.text(recalculateTotal(sc) + session.price);
 
                 return 'selected';
             } else if (this.status() == 'selected') { //Checked
@@ -81,7 +113,7 @@ $(document).ready(function () {
                 //Update Number
                 $counter.text(sc.find('selected').length - 1);
                 //update totalnum
-                $total.text(recalculateTotal(sc) - price);
+                $total.text(recalculateTotal(sc) - session.price);
 
                 //Delete reservation
                 $('#cart-item-' + this.settings.id).remove();
@@ -102,8 +134,9 @@ $(document).ready(function () {
 function recalculateTotal(sc) {
     let total = 0;
     sc.find('selected').each(function () {
-        total += price;
+        total += session.price;
     });
 
     return total;
 }
+})();
