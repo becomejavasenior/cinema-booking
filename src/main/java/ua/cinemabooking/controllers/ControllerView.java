@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller(value = "/")
 //@Controller
-public class ControllerView {
+public class ControllerView extends BaseController{
 
 
     @RequestMapping(value = {"/" ,"/afisha"}, method = RequestMethod.GET)

@@ -20,8 +20,13 @@ import java.util.List;
  */
 
 
+/**
+ * 2 methods have not written yet, because frontend developer must
+ * decide how client side will be work
+ * After this decision, Controller will be refactored
+ */
 @RestController
-public class ControllerRest {
+public class ControllerRest extends BaseController{
 
 
     @Autowired
@@ -45,7 +50,7 @@ public class ControllerRest {
 
     }
 
-    @RequestMapping(value = "getAllFilms", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/getAllFilms", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Movie>> getAllFilms(){
 
         List<Movie>  listMovies = tiketsService.movieList();
