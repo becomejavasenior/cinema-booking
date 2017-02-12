@@ -8,10 +8,13 @@ import ua.cinemabooking.model.Place;
 import ua.cinemabooking.model.Seans;
 import ua.cinemabooking.repository.BillOrderRepository;
 import ua.cinemabooking.repository.MovieRepository;
+import ua.cinemabooking.repository.PlaceRepository;
 import ua.cinemabooking.repository.SeansRepository;
 import ua.cinemabooking.serviceModel.Seats;
-import java.util.ArrayList;
+
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Artem on 04.02.2017.
@@ -24,6 +27,8 @@ public class TiketsServiceImpl implements  TiketsService {
     private BillOrderRepository billOrderRepository;
     @Autowired
     private MovieRepository movieRepository;
+    @Autowired
+    private PlaceRepository placeRepository;
 
     @Override
     public BillOrder createOrder(Seans seans, String email, Place place) {
@@ -32,8 +37,7 @@ public class TiketsServiceImpl implements  TiketsService {
         billOrder.setEmail(email);
         billOrder.setPlace(place);
         billOrder.setPayed(false);
-        billOrderRepository.save(billOrder);
-        return billOrder;
+        return billOrderRepository.save(billOrder);
     }
 
     @Override
@@ -41,7 +45,7 @@ public class TiketsServiceImpl implements  TiketsService {
         BillOrder billOrder1;
         billOrder1 = billOrder;
         billOrder1.setPayed(true);
-        billOrderRepository.save(billOrder1);
+        billOrder1 = billOrderRepository.save(billOrder1);
         return billOrder1;
     }
 
@@ -55,19 +59,23 @@ public class TiketsServiceImpl implements  TiketsService {
     public Seats getSeats(Long seansId) {
         Seans seans = seansRepository.findOne(seansId);
         List<BillOrder> orderList = billOrderRepository.findBySeans(seans);
-        List<Boolean> freeseats = new ArrayList<>();
-        for (int x = 0; x <10; x++) {
-            for (int y = 0; y <10 ; y++) {
-                Boolean resalt = true;
-                for (BillOrder order: orderList
-                        ) {
-                    if (order.getPlace().getX()==x && order.getPlace().getY()==y && order.isPayed())
-                        resalt = false;
-                }
-                freeseats.add(resalt);
+        List<Place> placeList = (List<Place>) placeRepository.findAll();
 
-            }
-        }
+        Map<Long, Boolean> freeseats = new HashMap<>();
+
+        placeList.forEach((place) ->{
+
+            final boolean[] resalt = {true};
+            orderList.forEach((order) ->{
+
+                if (order.getPlace().getX().equals(place.getX()) && order.getPlace().getY().equals(place.getY()) && order.isPayed())
+                    resalt[0] = false;
+            });
+
+            freeseats.put(place.getId(), resalt[0]);
+
+        });
+
         Seats seats1= new Seats();
         seats1.setMap(freeseats);
         seats1.setPrice(seans.getMovie().getPrice());

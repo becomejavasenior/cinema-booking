@@ -13,11 +13,11 @@ public class Movie {
 
     @Id
     @GeneratedValue
-    Long id;
+    private Long id;
 
-    String name;
+    private String name;
 
-    BigDecimal price;
+    private BigDecimal price;
 
     public Long getId() {
         return id;

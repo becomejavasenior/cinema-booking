@@ -10,19 +10,19 @@ import java.time.LocalDateTime;
 public class BillOrder {
 
     @Id @GeneratedValue
-    Long id;
+    private Long id;
 
-    String email;
+    private String email;
 
-    LocalDateTime dataTime;
+    private LocalDateTime dataTime;
 
     @ManyToOne(targetEntity = Place.class, fetch = FetchType.EAGER)
-    Place place;
+    private Place place;
 
     @ManyToOne(targetEntity = Seans.class, fetch = FetchType.EAGER)
-    Seans seans;
+    private Seans seans;
 
-    boolean payed;
+    private boolean payed;
 
     public Long getId() {
         return id;

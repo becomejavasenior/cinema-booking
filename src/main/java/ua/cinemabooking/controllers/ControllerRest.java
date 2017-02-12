@@ -12,8 +12,10 @@ import ua.cinemabooking.model.Seans;
 import ua.cinemabooking.repository.PlaceRepository;
 import ua.cinemabooking.repository.SeansRepository;
 import ua.cinemabooking.service.TiketsService;
+import ua.cinemabooking.serviceModel.ClientOrder;
 import ua.cinemabooking.serviceModel.Seats;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -24,7 +26,7 @@ import java.util.regex.Pattern;
 
 
 /**
- * 2 methods have not written yet, because frontend developer must
+ * 1 methods have not written yet, because frontend developer must
  * decide how client side will be work
  * After this decision, Controller will be refactored
  */
@@ -41,37 +43,23 @@ public class ControllerRest extends BaseController{
     @Autowired
     private SeansRepository seansRepository;
 
-    @RequestMapping(value = "/createOrder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<HttpStatus> createOrderBill(@RequestParam(name = "email") String email,
-                                                      @RequestParam(name = "placeId") String placeId,
-                                                      @RequestParam(name = "seansId") String seansId){
-        if (email != null && validate(email) && placeId != null && seansId != null){
+    @RequestMapping(value = "/createOrder", method = RequestMethod.POST,
+            produces = MediaType.APPLICATION_JSON_VALUE ,consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<ClientOrder> createNewOrder(@Valid @RequestBody ClientOrder clientOrder){
 
-            Long placeIdLong = Long.valueOf(placeId);
-            Long seansIdLong = Long.valueOf(seansId);
+        Place place = placeRepository.findOne(clientOrder.getPlaceId());
 
-            Place place = null;
-            Seans seans = null;
+        if (place == null) return new ResponseEntity<ClientOrder>(HttpStatus.NOT_FOUND);
 
-            if (placeIdLong != null && seansIdLong != null){
+        Seans seans = seansRepository.findOne(clientOrder.getSeansId());
 
-                place = placeRepository.findOne(placeIdLong);
+        if (seans == null) return new ResponseEntity<ClientOrder>(HttpStatus.NOT_FOUND);
 
-                if (place == null ) return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
+        BillOrder billOrder = tiketsService.createOrder(seans, clientOrder.getEmail(), place);
 
-                seans = seansRepository.findOne(seansIdLong);
-
-                if (seans == null) return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
-
-            }else new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
-
-            BillOrder billOrder = tiketsService.createOrder(seans, email, place);
-
-            if (billOrder != null){
-                return new ResponseEntity<HttpStatus>(HttpStatus.CREATED);
-            }else return new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
-
-        }else return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
+        if (billOrder != null){
+             return new ResponseEntity<ClientOrder>(clientOrder, HttpStatus.CREATED);
+        }else return new ResponseEntity<ClientOrder>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
     @RequestMapping(value = "/getSchedule/{filmId}", method = RequestMethod.GET,

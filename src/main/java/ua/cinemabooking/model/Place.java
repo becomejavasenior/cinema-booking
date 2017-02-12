@@ -8,9 +8,9 @@ import javax.persistence.*;
 @Entity
 public class Place {
     @Id @GeneratedValue
-    Long id;
-    Integer x;
-    Integer y;
+    private Long id;
+    private Integer x;
+    private Integer y;
 
     public Long getId() {
         return id;

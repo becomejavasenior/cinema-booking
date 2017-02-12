@@ -21,20 +21,20 @@ import java.util.Random;
 @Service
 public class Populator {
 
-    public static final int SEANSES_STARTS = 9;
-    public static final int SEANSES_ENDS = 23;
-    public static final int MOVIES_NUMBER = 10;
-    public static final int ROWS = 7;
-    public static final int SEATS = 15;
+    private static final int SEANSES_STARTS = 9;
+    private static final int SEANSES_ENDS = 23;
+    private static final int MOVIES_NUMBER = 10;
+    private static final int ROWS = 7;
+    private static final int SEATS = 15;
 
     @Autowired
-    MovieRepository movieRepository;
+    private MovieRepository movieRepository;
 
     @Autowired
-    SeansRepository seansRepository;
+    private SeansRepository seansRepository;
 
     @Autowired
-    PlaceRepository placeRepository;
+    private PlaceRepository placeRepository;
 
     private void populateMovies() {
         for (int i = 0; i < MOVIES_NUMBER; i++) {
@@ -54,8 +54,8 @@ public class Populator {
             LocalDateTime end = LocalDateTime.of(2017, Month.FEBRUARY, 4, i, 55);
             seans.setEnd(end);
             Random r = new Random();
-            List<Movie> all = (List<Movie>) movieRepository.findAll();
-            int size = all.size();
+//            List<Movie> all = (List<Movie>) movieRepository.findAll();
+//            int size = all.size();
 
             //These lines were changed because tests have shown that simple random by range(10) is not working
             Long maxId = Long.valueOf(movieRepository.getMaxCode());
@@ -87,5 +87,25 @@ public class Populator {
         populateMovies();
         populateSeanses();
         populatePlaces();
+    }
+
+    public static int getSeansesStarts() {
+        return SEANSES_STARTS;
+    }
+
+    public static int getSeansesEnds() {
+        return SEANSES_ENDS;
+    }
+
+    public static int getMoviesNumber() {
+        return MOVIES_NUMBER;
+    }
+
+    public static int getROWS() {
+        return ROWS;
+    }
+
+    public static int getSEATS() {
+        return SEATS;
     }
 }

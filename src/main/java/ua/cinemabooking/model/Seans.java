@@ -11,13 +11,13 @@ public class Seans {
 
     @Id
     @GeneratedValue
-    Long id;
+    private Long id;
 
-    LocalDateTime start;
-    LocalDateTime end;
+    private LocalDateTime start;
+    private LocalDateTime end;
 
     @ManyToOne(targetEntity = Movie.class)
-    Movie movie;
+    private Movie movie;
 
     public Long getId() {
         return id;
