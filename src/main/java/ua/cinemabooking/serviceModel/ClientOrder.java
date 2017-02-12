@@ -9,7 +9,7 @@ import javax.validation.constraints.NotNull;
  * Created by macbookair on 12.02.17.
  */
 
-@Component
+
 public class ClientOrder {
 
     @NotNull

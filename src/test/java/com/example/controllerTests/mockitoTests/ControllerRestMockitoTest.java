@@ -36,7 +36,7 @@ import static org.mockito.Mockito.*;
  */
 
 @Transactional
-public class ControllerRestMockitoTest extends AbstractControllerTest{
+public class ControllerRestMockitoTest extends AbstractControllerTest {
 
     @Mock
     private TiketsService tiketsService;
@@ -57,7 +57,7 @@ public class ControllerRestMockitoTest extends AbstractControllerTest{
     private ControllerRest controllerRest;
 
     @Before
-    public void setUp(){
+    public void setUp() {
         MockitoAnnotations.initMocks(this);
         setUp(controllerRest);
         populator.init();
@@ -70,12 +70,13 @@ public class ControllerRestMockitoTest extends AbstractControllerTest{
         Seans seans = getSeansById(order.getSeansId());
         Place place = getPlaceById(order.getPlaceId());
 
+        when(placeRepository.findOne(any(Long.class))).thenReturn(place);
+        when(seansRepository.findOne(any(Long.class))).thenReturn(seans);
+
         when(tiketsService.createOrder(seans, order.getEmail(), place)).
-                thenReturn(any(BillOrder.class));
+                thenReturn(getBillOrder(place.getX(), place.getY(), seans));
 
         String uri = "/createOrder";
-        System.out.println(order.getPlaceId());
-        System.out.println(order.getSeansId());
 
         String orderJson = mapToJson(order);
 
@@ -120,7 +121,7 @@ public class ControllerRestMockitoTest extends AbstractControllerTest{
     }
 
     @Test
-    public void getScheduleByFilmIdTest() throws Exception{
+    public void getScheduleByFilmIdTest() throws Exception {
 
         Long id = getIdInAvaliableRange(100, 120);
 
@@ -164,7 +165,7 @@ public class ControllerRestMockitoTest extends AbstractControllerTest{
         Assert.assertTrue("failure -> expected content ", content.trim().length() > 0);
     }
 
-    private Seats getSeats(Long seansId){
+    private Seats getSeats(Long seansId) {
 
         Seans seans = getSeansById(seansId);
 
@@ -176,9 +177,9 @@ public class ControllerRestMockitoTest extends AbstractControllerTest{
         Map<Long, Boolean> freeseats = new HashMap<>();
 
 
-        placeList.forEach((p) ->{
+        placeList.forEach((p) -> {
             final boolean[] r = {true};
-            orderList.forEach((order) ->{
+            orderList.forEach((order) -> {
                 if (order.getPlace().getX().equals(p.getX()) && order.getPlace().getY().equals(p.getY()) && order.isPayed())
                     r[0] = false;
             });
@@ -208,7 +209,7 @@ public class ControllerRestMockitoTest extends AbstractControllerTest{
         return seats;
     }
 
-    private List<BillOrder> getListBillOrder( int xAmount, int yAmount, Seans seans){
+    private List<BillOrder> getListBillOrder(int xAmount, int yAmount, Seans seans) {
 
         List<BillOrder> list = new LinkedList<>();
 
@@ -223,7 +224,7 @@ public class ControllerRestMockitoTest extends AbstractControllerTest{
         return list;
     }
 
-    private List<Place> getPlaces(){
+    private List<Place> getPlaces() {
 
         List<Place> list = new ArrayList<>();
         Place place = null;
@@ -240,17 +241,17 @@ public class ControllerRestMockitoTest extends AbstractControllerTest{
     }
 
 
-    private BillOrder getBillOrder(int x, int y, Seans seans){
+    private BillOrder getBillOrder(int x, int y, Seans seans) {
 
         BillOrder billOrder = new BillOrder();
         Random random = new Random();
         int i = random.nextInt(1);
         billOrder.setId((long) random.nextInt(10000));
-        billOrder.setDataTime(LocalDateTime.of(2017, Month.FEBRUARY, 4, i , 0));
+        billOrder.setDataTime(LocalDateTime.of(2017, Month.FEBRUARY, 4, i, 0));
         billOrder.setEmail("email1234@gmail.com");
-        if (i == 1 ){
+        if (i == 1) {
             billOrder.setPayed(true);
-        }else {
+        } else {
             billOrder.setPayed(false);
         }
         billOrder.setPlace(getPlace(x, y));
@@ -259,14 +260,14 @@ public class ControllerRestMockitoTest extends AbstractControllerTest{
         return billOrder;
     }
 
-    private Place getPlaceById(Long id){
+    private Place getPlaceById(Long id) {
 
         Place place = getPlace(8, 8);
         place.setId(id);
         return place;
     }
 
-    private Place getPlace(int x, int y){
+    private Place getPlace(int x, int y) {
 
         Place place = new Place();
         Random random = new Random();
@@ -276,27 +277,27 @@ public class ControllerRestMockitoTest extends AbstractControllerTest{
         return place;
     }
 
-    private Seans getSeansById(Long id){
+    private Seans getSeansById(Long id) {
 
         Seans seans = new Seans();
         Random random = new Random(100);
         seans.setId(id);
         int i = random.nextInt(9);
-        seans.setStart(LocalDateTime.of(2017, Month.FEBRUARY, 4, i , 0));
+        seans.setStart(LocalDateTime.of(2017, Month.FEBRUARY, 4, i, 0));
         seans.setMovie(getMovie());
-        seans.setEnd(LocalDateTime.of(2017, Month.FEBRUARY, 4, i , 55));
+        seans.setEnd(LocalDateTime.of(2017, Month.FEBRUARY, 4, i, 55));
 
         return seans;
     }
 
-    private Long getIdInAvaliableRange(int minId, int maxId){
+    private Long getIdInAvaliableRange(int minId, int maxId) {
 
         Random random = new Random();
 
-        return (long)minId + (long)(random.nextInt((int) (maxId - minId + 1)));
+        return (long) minId + (long) (random.nextInt((int) (maxId - minId + 1)));
     }
 
-    private List<Movie> getAllMovie(){
+    private List<Movie> getAllMovie() {
         List<Movie> list = new LinkedList<>();
         for (int i = 0; i < 10; i++) {
             list.add(getMovie());
@@ -304,9 +305,9 @@ public class ControllerRestMockitoTest extends AbstractControllerTest{
         return list;
     }
 
-    private List<Seans> getAllSeans(){
+    private List<Seans> getAllSeans() {
 
-        Movie movie =  getMovie();
+        Movie movie = getMovie();
 
         List<Seans> list = new LinkedList<>();
         for (int i = 0; i < 10; i++) {
@@ -317,30 +318,30 @@ public class ControllerRestMockitoTest extends AbstractControllerTest{
 
     }
 
-    private Seans getSeans(Movie movie){
+    private Seans getSeans(Movie movie) {
 
         Seans seans = new Seans();
         Random random = new Random(100);
         int number = random.nextInt();
         seans.setId((long) number);
         int i = random.nextInt(9);
-        seans.setStart(LocalDateTime.of(2017, Month.FEBRUARY, 4, i , 0));
+        seans.setStart(LocalDateTime.of(2017, Month.FEBRUARY, 4, i, 0));
         seans.setMovie(getMovie());
-        seans.setEnd(LocalDateTime.of(2017, Month.FEBRUARY, 4, i , 55));
+        seans.setEnd(LocalDateTime.of(2017, Month.FEBRUARY, 4, i, 55));
         return seans;
     }
 
-    private Movie getMovie(){
+    private Movie getMovie() {
         Movie movie = new Movie();
         Random random = new Random(100);
         int number = random.nextInt();
         movie.setId((long) number);
-        movie.setName("Movie"+number);
+        movie.setName("Movie" + number);
         movie.setPrice(BigDecimal.valueOf(number));
         return movie;
     }
 
-    private ClientOrder getClientOrder(){
+    private ClientOrder getClientOrder() {
         ClientOrder order = new ClientOrder();
         order.setEmail("email1234@gmail.com");
 //        List<Place> placeList = (List<Place>) placeRepository.findAll();
@@ -357,7 +358,7 @@ public class ControllerRestMockitoTest extends AbstractControllerTest{
         return order;
     }
 
-    private ClientOrder getBadClientOrder(){
+    private ClientOrder getBadClientOrder() {
         ClientOrder order = getClientOrder();
         order.setEmail("email1234gmail.com");
         return order;
