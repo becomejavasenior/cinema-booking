@@ -4,16 +4,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import ua.cinemabooking.model.BillOrder;
 import ua.cinemabooking.model.Movie;
+import ua.cinemabooking.model.Place;
 import ua.cinemabooking.model.Seans;
+import ua.cinemabooking.repository.PlaceRepository;
+import ua.cinemabooking.repository.SeansRepository;
 import ua.cinemabooking.service.TiketsService;
 import ua.cinemabooking.serviceModel.Seats;
 
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created by macbookair on 04.02.17.
@@ -31,6 +34,45 @@ public class ControllerRest extends BaseController{
 
     @Autowired
     private TiketsService tiketsService;
+
+    @Autowired
+    private PlaceRepository placeRepository;
+
+    @Autowired
+    private SeansRepository seansRepository;
+
+    @RequestMapping(value = "/createOrder", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<HttpStatus> createOrderBill(@RequestParam(name = "email") String email,
+                                                      @RequestParam(name = "placeId") String placeId,
+                                                      @RequestParam(name = "seansId") String seansId){
+        if (email != null && validate(email) && placeId != null && seansId != null){
+
+            Long placeIdLong = Long.valueOf(placeId);
+            Long seansIdLong = Long.valueOf(seansId);
+
+            Place place = null;
+            Seans seans = null;
+
+            if (placeIdLong != null && seansIdLong != null){
+
+                place = placeRepository.findOne(placeIdLong);
+
+                if (place == null ) return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
+
+                seans = seansRepository.findOne(seansIdLong);
+
+                if (seans == null) return new ResponseEntity<HttpStatus>(HttpStatus.NOT_FOUND);
+
+            }else new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
+
+            BillOrder billOrder = tiketsService.createOrder(seans, email, place);
+
+            if (billOrder != null){
+                return new ResponseEntity<HttpStatus>(HttpStatus.CREATED);
+            }else return new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
+
+        }else return new ResponseEntity<HttpStatus>(HttpStatus.BAD_REQUEST);
+    }
 
     @RequestMapping(value = "/getSchedule/{filmId}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
@@ -69,6 +111,14 @@ public class ControllerRest extends BaseController{
                 return new ResponseEntity<Seats>(seats, HttpStatus.OK);
             }else return new ResponseEntity<Seats>(HttpStatus.NOT_FOUND);
         }else return new ResponseEntity<Seats>(HttpStatus.BAD_REQUEST);
+    }
+
+    private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
+            Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
+
+    private static boolean validate(String emailStr) {
+        Matcher matcher = VALID_EMAIL_ADDRESS_REGEX .matcher(emailStr);
+        return matcher.find();
     }
 
 }
