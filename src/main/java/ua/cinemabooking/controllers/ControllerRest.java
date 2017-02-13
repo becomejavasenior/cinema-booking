@@ -24,12 +24,6 @@ import java.util.regex.Pattern;
  * Created by macbookair on 04.02.17.
  */
 
-
-/**
- * 1 methods have not written yet, because frontend developer must
- * decide how client side will be work
- * After this decision, Controller will be refactored
- */
 @RestController
 public class ControllerRest extends BaseController{
 

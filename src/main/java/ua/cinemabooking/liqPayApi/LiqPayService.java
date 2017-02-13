@@ -15,9 +15,10 @@ public class LiqPayService {
     private final String PRIVATE_KEY = "GMQ8uT0sMqU8WRCSrrRXMaskNevyObUusSMxwPhX";
 
     public Map<String, String> liqPayGenerateParamForHtmlForm(String email, Integer amount) {
-        HashMap params = new HashMap();
+
+        HashMap<String, String> params = new HashMap<>();
         params.put("version", "3");
-        params.put("amount", amount);
+        params.put("amount", String.valueOf(amount));
         params.put("currency", "UAH");
         params.put("description", "Booking");
         params.put("order_id", email);
@@ -34,4 +35,11 @@ public class LiqPayService {
         return new LiqPay(PUBLIC_KEY, PRIVATE_KEY).generateData(params);
     }
 
+    public String getPUBLIC_KEY() {
+        return PUBLIC_KEY;
+    }
+
+    public String getPRIVATE_KEY() {
+        return PRIVATE_KEY;
+    }
 }
