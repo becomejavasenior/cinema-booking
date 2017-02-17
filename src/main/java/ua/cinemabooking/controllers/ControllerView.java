@@ -19,7 +19,7 @@ public class ControllerView extends BaseController{
         return "afisha";
     }
 
-    @RequestMapping(value = "/schedule/{filmId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/seans/{filmId}", method = RequestMethod.GET)
     public String getPayment(Model model){
 
 
@@ -31,5 +31,4 @@ public class ControllerView extends BaseController{
 
         return "seats";
     }
-
 }

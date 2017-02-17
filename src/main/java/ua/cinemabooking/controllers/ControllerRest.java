@@ -56,7 +56,7 @@ public class ControllerRest extends BaseController{
         }else return new ResponseEntity<ClientOrder>(HttpStatus.INTERNAL_SERVER_ERROR);
     }
 
-    @RequestMapping(value = "/getSchedule/{filmId}", method = RequestMethod.GET,
+    @RequestMapping(value = "/getSeans/{filmId}", method = RequestMethod.GET,
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Seans>> getSchedule(@PathVariable(name = "filmId") String filmId){
 
