@@ -127,7 +127,7 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
 
         when(tiketsService.seansList(id)).thenReturn(getAllSeans());
 
-        String uri = "/getSchedule/{filmId}";
+        String uri = "/getSeans/{filmId}";
 
         MvcResult result = mvc.perform(MockMvcRequestBuilders.get(uri, id).
                 accept(MediaType.APPLICATION_JSON)).andReturn();
