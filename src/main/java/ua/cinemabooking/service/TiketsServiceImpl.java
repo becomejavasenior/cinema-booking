@@ -12,7 +12,7 @@ import ua.cinemabooking.repository.PlaceRepository;
 import ua.cinemabooking.repository.SeansRepository;
 import ua.cinemabooking.serviceModel.Seats;
 
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -61,7 +61,7 @@ public class TiketsServiceImpl implements  TiketsService {
         List<BillOrder> orderList = billOrderRepository.findBySeans(seans);
         List<Place> placeList = (List<Place>) placeRepository.findAll();
 
-        Map<Long, Boolean> freeseats = new HashMap<>();
+        Map<Long, Boolean> freeseats = new LinkedHashMap<>();
 
         placeList.forEach((place) ->{
 
