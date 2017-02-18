@@ -42,6 +42,6 @@ public class AdminController {
     public String save(Movie movie, Model model) {
 //        System.out.println("movie = " + movie);
         movieRepository.save(movie);
-        return "redirect:/";
+        return "redirect:/admin";
     }
 }
