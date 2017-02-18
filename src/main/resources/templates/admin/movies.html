@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Movies management</title>
+</head>
+<body>
+
+    <table>
+        <tr th:each="movie:${movies}">
+            <td>
+                <span th:text="${movie.id}"></span>
+            </td>
+            <td>
+                <span th:text="${movie.name}"></span>
+            </td>
+            <td>
+                <span th:text="${movie.price}"></span>
+            </td>
+            <td>
+                <!--<a th:href="@{/admin/edit/${movie.id}}">Edit</a> |-->
+                <!--<a th:href="@{/admin/delete/${movie.id}}">Delete</a>-->
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
