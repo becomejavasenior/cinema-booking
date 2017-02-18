@@ -15,17 +15,14 @@ import java.time.Month;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by Sunny on 04.02.2017.
- */
 @Service
 public class Populator {
 
     private static final int SEANSES_STARTS = 9;
     private static final int SEANSES_ENDS = 23;
     private static final int MOVIES_NUMBER = 10;
-    private static final int ROWS = 7;
-    private static final int SEATS = 15;
+    private static final int ROWS = 10;
+    private static final int SEATS = 10;
 
     @Autowired
     private MovieRepository movieRepository;
@@ -39,9 +36,10 @@ public class Populator {
     private void populateMovies() {
         for (int i = 0; i < MOVIES_NUMBER; i++) {
             Movie movie = new Movie();
-            movie.setName("movie " + i);
+            movie.setName("Movie " + i);
             movie.setPrice(new BigDecimal(50 + i * 10));
             movieRepository.save(movie);
+            System.out.println(movie);
         }
 
     }
@@ -62,10 +60,12 @@ public class Populator {
             Long minId = Long.valueOf(movieRepository.getMinCode());
             Movie movie = movieRepository.findOne(minId + (long) r.nextInt((int) (maxId - minId + 1)));
 
+
 //            Movie movie = movieRepository.findOne((long) r.nextInt(size));
 
             seans.setMovie(movie);
             seansRepository.save(seans);
+            System.out.println(seans);
         }
     }
 
@@ -78,6 +78,7 @@ public class Populator {
                     place.setX(i);
                     place.setY(j);
                     placeRepository.save(place);
+                    System.out.println(place);
                 }
             }
         }
