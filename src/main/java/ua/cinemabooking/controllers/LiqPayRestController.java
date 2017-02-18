@@ -20,23 +20,6 @@ import javax.xml.bind.DatatypeConverter;
 @RequestMapping("/api/rest/liqpay")
 public class LiqPayRestController {
 
-//    private final LiqPayService liqPayService;
-
-//    @Autowired
-//    public LiqPayRestController(LiqPayService liqPayService) {
-//        this.liqPayService = liqPayService;
-//    }
-//
-//    @RequestMapping(value = "/account/getLiqPayParam", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseBody
-//    public String[] getLiqPayParam(@RequestParam("email") String email, @RequestParam("amount") Integer amount) {
-//
-//        if (email == null || amount == null) return null;
-//
-//        Map<String, String> result = liqPayService.liqPayGenerateParamForHtmlForm(email, amount);
-//
-//        return new String[]{result.get("data"), result.get("signature")};
-//    }
 
 
     /**
