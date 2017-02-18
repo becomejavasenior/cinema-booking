@@ -3,19 +3,15 @@ package ua.cinemabooking.controllers;
 
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
-import ua.cinemabooking.liqPayApi.LiqPayService;
-import ua.cinemabooking.model.Seans;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.xml.bind.DatatypeConverter;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @author Kobylyatskyy Alexander
@@ -24,23 +20,23 @@ import java.util.Map;
 @RequestMapping("/api/rest/liqpay")
 public class LiqPayRestController {
 
-    private final LiqPayService liqPayService;
+//    private final LiqPayService liqPayService;
 
-    @Autowired
-    public LiqPayRestController(LiqPayService liqPayService) {
-        this.liqPayService = liqPayService;
-    }
-
-    @RequestMapping(value = "/account/getLiqPayParam", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public String[] getLiqPayParam(@RequestParam("email") String email, @RequestParam("amount") Integer amount) {
-
-        if (email == null || amount == null) return null;
-
-        Map<String, String> result = liqPayService.liqPayGenerateParamForHtmlForm(email, amount);
-
-        return new String[]{result.get("data"), result.get("signature")};
-    }
+//    @Autowired
+//    public LiqPayRestController(LiqPayService liqPayService) {
+//        this.liqPayService = liqPayService;
+//    }
+//
+//    @RequestMapping(value = "/account/getLiqPayParam", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+//    @ResponseBody
+//    public String[] getLiqPayParam(@RequestParam("email") String email, @RequestParam("amount") Integer amount) {
+//
+//        if (email == null || amount == null) return null;
+//
+//        Map<String, String> result = liqPayService.liqPayGenerateParamForHtmlForm(email, amount);
+//
+//        return new String[]{result.get("data"), result.get("signature")};
+//    }
 
 
     /**
