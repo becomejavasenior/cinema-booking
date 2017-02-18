@@ -4,11 +4,11 @@
     let n = locationPathName.lastIndexOf('/');
     let filmId = locationPathName.substring(n + 1);
 
+    let session = getSession(filmId);
+
 
     function getSession(filmId) {
         let session = {};
-
-        console.log('Перед запросом');
 
         $.ajax({
             url: '/getSeats/' + filmId,
@@ -34,9 +34,6 @@
     }
 
 
-    let session = getSession(filmId);
-
-
     function getUnavailable(map) {
         let unavailable = [];
 
@@ -52,7 +49,7 @@
             }
             seat++;
         }
-        
+
         return unavailable;
     }
 
@@ -96,7 +93,8 @@
                         .appendTo($cart);
 
                     $counter.text(sc.find('selected').length + 1);
-                    $total.text(recalculateTotal(sc) + session.price);
+
+                    $total.text(recalculateTotal(sc, session) + session.price);
 
                     return 'selected';
                 } else if (this.status() == 'selected') { //Checked
@@ -104,7 +102,8 @@
                     //Update Number
                     $counter.text(sc.find('selected').length - 1);
                     //update totalnum
-                    $total.text(recalculateTotal(sc) - session.price);
+
+                    $total.text(recalculateTotal(sc, session) - session.price);
 
                     //Delete reservation
                     $('#cart-item-' + this.settings.id).remove();
@@ -146,7 +145,7 @@
     });
 
 //sum total money
-    function recalculateTotal(sc) {
+    function recalculateTotal(sc, session) {
         let total = 0;
         sc.find('selected').each(function () {
             total += session.price;
