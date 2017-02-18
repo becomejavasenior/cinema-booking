@@ -80,8 +80,8 @@ div.seatCharts-container {
 }
 
 div.seatCharts-legend {
-    padding-left: 0px;
-    position: absolute;
+    padding-left: 0;
+    /*position: absolute;*/
     bottom: 16px;
 }
 
@@ -90,7 +90,7 @@ ul.seatCharts-legendList {
 }
 
 .seatCharts-legendItem {
-    float: left;
+    /*float: left;*/
     width: 90px;
     margin-top: 10px;
     line-height: 2;
