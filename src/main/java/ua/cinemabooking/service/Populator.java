@@ -60,6 +60,7 @@ public class Populator {
             Long minId = Long.valueOf(movieRepository.getMinCode());
             Movie movie = movieRepository.findOne(minId + (long) r.nextInt((int) (maxId - minId + 1)));
 
+
 //            Movie movie = movieRepository.findOne((long) r.nextInt(size));
 
             seans.setMovie(movie);
