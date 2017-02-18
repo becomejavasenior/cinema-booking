@@ -1,3 +1,5 @@
+var s1 = {};
+
 (function () {
 
     let locationPathName = window.location.pathname;
@@ -7,7 +9,7 @@
 
     let placeNumber = 0;
 
-
+    let session = getSession(filmId);
 
     function getSession(filmId) {
         let session = {};
@@ -32,13 +34,15 @@
 
                 drawInfo(session);
                 drawSeats(session);
-                return response;
+
+                s1 = session;
+                return session;
             }
         });
     }
 
 
-    let session = getSession(filmId);
+
 
 
     function getUnavailable(map) {
@@ -113,7 +117,7 @@
 
                     r1 = 10*(this.settings.row);
                     r2 = this.settings.label;
-                    
+
                     placeNumber = r1+r2;
                     console.log(placeNumber)
 
@@ -150,20 +154,37 @@
     }
 
     $('.pay-form .submit').on('click', function () {
+    // $('#test1').on('click', function () {
 
-        // ToDo объединить запрос на создание order и получение данных для LiqPay в один запрос
-        // FixMe переименовать поле email на id заказа
+
+        // FixMe убрать эти костыли
+        var obj = s1.map;
+        var arr = [];
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                arr.push(key);
+            }
+        };
+
+        let clientOrder = {
+            email : $('#email-input').val(),
+            seansId : filmId,
+            placeId : arr[placeNumber]
+        };
+
 
         $.ajax({
-            url: '/api/rest/liqpay/account/getLiqPayParam',
+            url: '/createOrder',
             method: 'POST',
-            data: {'email': $('#email-input').val(), 'amount': 80},
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(clientOrder),
             success: function (response) {
-                $('#liq-pay-data').val(response[0]);
-                $('#liq-pay-signature').val(response[1]);
+                $('#liq-pay-data').val(response.data);
+                $('#liq-pay-signature').val(response.signature);
                 $('form').submit();
             }
         });
+        event.preventDefault();
         return false;
     });
 
