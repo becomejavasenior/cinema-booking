@@ -13,9 +13,25 @@ import java.util.Properties;
 @Async
 public class EmailServiceImpl implements EmailService {
 
+    private Session session;
     private String host="smtp.gmail.com";
     private String user="cinemabecomejavasenior@gmail.com";
     private String password="becomejavasenior0218";
+
+    public void init() {
+        Properties props = new Properties();
+
+        props.put("mail.smtp.host",host);
+        props.put("mail.smtp.auth", "true");
+        props.put("mail.smtp.starttls.enable", "true");
+
+        session  = Session.getDefaultInstance(props,
+                new javax.mail.Authenticator() {
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(user,password);
+                    }
+                });
+    }
 
     @Override
     public void sendMessage(String textMessage, String email) {
@@ -24,17 +40,6 @@ public class EmailServiceImpl implements EmailService {
 
     @Override
     public void sendMessage(String textMessage, String subject, String email) {
-        Properties props = new Properties();
-        props.put("mail.smtp.host",host);
-        props.put("mail.smtp.auth", "true");
-        props.put("mail.smtp.starttls.enable", "true");
-
-        Session session = Session.getDefaultInstance(props,
-                new javax.mail.Authenticator() {
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(user,password);
-                    }
-                });
         try {
             MimeMessage message = new MimeMessage(session);
             message.setFrom(new InternetAddress(user));
