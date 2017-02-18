@@ -27,7 +27,6 @@ import java.util.regex.Pattern;
 @RestController
 public class ControllerRest extends BaseController{
 
-
     @Autowired
     private TiketsService tiketsService;
 
