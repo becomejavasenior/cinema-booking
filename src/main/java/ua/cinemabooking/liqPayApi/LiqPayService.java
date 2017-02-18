@@ -14,14 +14,14 @@ public class LiqPayService {
     private final String PUBLIC_KEY = "i29966004221";
     private final String PRIVATE_KEY = "GMQ8uT0sMqU8WRCSrrRXMaskNevyObUusSMxwPhX";
 
-    public Map<String, String> liqPayGenerateParamForHtmlForm(String email, Integer amount) {
+    public Map<String, String> liqPayGenerateParamForHtmlForm(Long orderId, Integer amount) {
 
         HashMap<String, String> params = new HashMap<>();
         params.put("version", "3");
         params.put("amount", String.valueOf(amount));
         params.put("currency", "UAH");
         params.put("description", "Booking");
-        params.put("order_id", email);
+        params.put("order_id", String.valueOf(orderId));
 
         // ToDo here we must put our hosting url
         params.put("server_url", "http://62.80.167.164:8087/callback");

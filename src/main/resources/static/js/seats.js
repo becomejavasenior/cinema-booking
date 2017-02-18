@@ -8,6 +8,8 @@
     function getSession(filmId) {
         let session = {};
 
+        console.log('Перед запросом');
+
         $.ajax({
             url: '/getSeats/' + filmId,
             method: 'GET',
@@ -21,6 +23,7 @@
                 session.arrMap = [];
                 Object.values(session.map).forEach(value => session.arrMap.push(value));
 
+                console.log('Результат запроса');
                 console.log(session);
 
                 drawInfo(session);

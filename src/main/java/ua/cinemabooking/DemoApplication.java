@@ -7,7 +7,6 @@ import ua.cinemabooking.service.EmailService;
 import ua.cinemabooking.service.Populator;
 
 import javax.annotation.PostConstruct;
-
 //<<<<<<< Updated upstream
 //=======
 
@@ -20,7 +19,6 @@ public class DemoApplication {
 	 * and then it should comment again
 	 * @param args
 	 */
-
 	@Autowired
 	private Populator populator;
 
