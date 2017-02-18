@@ -21,7 +21,6 @@ import javax.xml.bind.DatatypeConverter;
 public class LiqPayRestController {
 
 
-
     /**
      * Catch callback from bank
      */
