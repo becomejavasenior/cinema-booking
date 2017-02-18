@@ -5,4 +5,4 @@ deploy:
  provider: heroku
  api-key: 
   secure: $HEROKU_API_KEY
- app: ci-spring-boot
+ app: cinema
