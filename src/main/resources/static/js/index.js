@@ -15,17 +15,20 @@ $(document).ready(function () {
         columns: [
             { "data": null, "title": "", "visible": false, "render": function(data){
                 count++;
-                //console.log("count: "+count);
                 return drawSection(data, count);
             }
             }
         ]
     });
+    $('#movies').on('page.dt', function() {
+        // TODO erase all current clones on the page
+        var info = table.page.info();
+        var page = info.page+1;
+        console.log('changed - page '+page+' out of '+info.pages+' is clicked');
+    });
 });
 
 function drawSection(response, counter){
-
-    console.log("drawSection running "+response.name);
 
     let rowdiv = $('<div class="row" id="myrow"></div>');
 
