@@ -22,10 +22,10 @@ public class DemoApplication {
 	@Autowired
 	private Populator populator;
 
-	@PostConstruct
+	/*@PostConstruct
 	private void init(){
 		populator.init();
-	}
+	}*/
 
 	public static void main(String[] args) {
 		SpringApplication.run(DemoApplication.class, args);

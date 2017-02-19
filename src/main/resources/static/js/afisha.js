@@ -2,7 +2,7 @@
 
 
     function getSession(){
-    // let session = {};
+        // let session = {};
 
         $.ajax({
             url: '/getAllFilms',
@@ -129,24 +129,3 @@
     // });
 
 })();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

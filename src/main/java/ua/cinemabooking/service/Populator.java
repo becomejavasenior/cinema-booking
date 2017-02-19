@@ -19,7 +19,7 @@ public class Populator {
 
     private static final int SEANSES_STARTS = 9;
     private static final int SEANSES_ENDS = 23;
-    private static final int MOVIES_NUMBER = 10;
+    private static final int MOVIES_NUMBER = 100;
     private static final int ROWS = 10;
     private static final int SEATS = 10;
 
