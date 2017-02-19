@@ -1,9 +1,15 @@
+var s1 = {};
+
 (function () {
 
     let locationPathName = window.location.pathname;
     let n = locationPathName.lastIndexOf('/');
     let filmId = locationPathName.substring(n + 1);
 
+
+    let placeNumber = 0;
+
+    let session = getSession(filmId);
 
     function getSession(filmId) {
         let session = {};
@@ -28,13 +34,15 @@
 
                 drawInfo(session);
                 drawSeats(session);
-                return response;
+
+                s1 = session;
+                return session;
             }
         });
     }
 
 
-    let session = getSession(filmId);
+
 
 
     function getUnavailable(map) {
@@ -89,14 +97,32 @@
                 ]
             },
             click: function () { //Click event
+                placeNumber = 0;
                 if (this.status() == 'available') { //optional seat
+
+                    console.log('Первое число')
+                    // console.log(this.settings.row)
+
+                    placeNumber = placeNumber + this.settings.row;
+
                     $('<li>R' + (this.settings.row + 1) + ' S' + this.settings.label + '</li>')
                         .attr('id', 'cart-item-' + this.settings.id)
                         .data('seatId', this.settings.id)
                         .appendTo($cart);
 
+
+                    let r1 = 0;
+                    let r2 = 0;
+
+
+                    r1 = 10*(this.settings.row);
+                    r2 = this.settings.label;
+
+                    placeNumber = r1+r2;
+                    console.log(placeNumber)
+
                     $counter.text(sc.find('selected').length + 1);
-                    $total.text(recalculateTotal(sc) + session.price);
+                    $total.text(recalculateTotal(sc,session) + session.price);
 
                     return 'selected';
                 } else if (this.status() == 'selected') { //Checked
@@ -104,7 +130,7 @@
                     //Update Number
                     $counter.text(sc.find('selected').length - 1);
                     //update totalnum
-                    $total.text(recalculateTotal(sc) - session.price);
+                    $total.text(recalculateTotal(sc,session) - session.price);
 
                     //Delete reservation
                     $('#cart-item-' + this.settings.id).remove();
@@ -128,25 +154,42 @@
     }
 
     $('.pay-form .submit').on('click', function () {
+    // $('#test1').on('click', function () {
 
-        // ToDo объединить запрос на создание order и получение данных для LiqPay в один запрос
-        // FixMe переименовать поле email на id заказа
+
+        // FixMe убрать эти костыли
+        var obj = s1.map;
+        var arr = [];
+        for (var key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                arr.push(key);
+            }
+        };
+
+        let clientOrder = {
+            email : $('#email-input').val(),
+            seansId : filmId,
+            placeId : arr[placeNumber]
+        };
+
 
         $.ajax({
-            url: '/api/rest/liqpay/account/getLiqPayParam',
+            url: '/createOrder',
             method: 'POST',
-            data: {'email': $('#email-input').val(), 'amount': 80},
+            contentType: "application/json; charset=utf-8",
+            data: JSON.stringify(clientOrder),
             success: function (response) {
-                $('#liq-pay-data').val(response[0]);
-                $('#liq-pay-signature').val(response[1]);
+                $('#liq-pay-data').val(response.data);
+                $('#liq-pay-signature').val(response.signature);
                 $('form').submit();
             }
         });
+        event.preventDefault();
         return false;
     });
 
 //sum total money
-    function recalculateTotal(sc) {
+    function recalculateTotal(sc,session) {
         let total = 0;
         sc.find('selected').each(function () {
             total += session.price;
