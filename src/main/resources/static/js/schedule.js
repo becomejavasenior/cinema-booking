@@ -19,7 +19,6 @@
                 $(".page-header").text(response[0].movie.name);
 
                 for (var i=0; i<response.length; i++) {
-
                     $(".list-seans").append(
                         "<div class=\"seans\">" +
                         "<p>" + response[i].start.hour + ":" +response[i].start.minute + "</p>" +
