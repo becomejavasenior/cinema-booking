@@ -1,6 +1,9 @@
 (function (){
 
 
+    deleteAllContent();
+    getSession();
+
     function getSession(){
     // let session = {};
 
@@ -8,22 +11,23 @@
             url: '/getAllFilms',
             method: 'GET',
             success: function (response) {
-                // session.price = response.price;
-                // session.filmId = filmId;
-                // session.filmName = response.filmName;
-                // session.filmDate = response.filmDate;
-                // session.map = response.map;
 
-                return drowSection(response);
+                let status = drowSection(response);
+                console.log(status)
+                return status;
             }
         });
     }
 
+    function deleteAllContent() {
+        $('.row .my-content-row').remove();
+    }
 
     function drowSection(response){
 
-        let rowdiv = $('<div class="row" id="myrow"></div>');
+        let rowdiv = $('<div class="row my-content-row"></div>');
 
+        $('.container').find(".my-header").after(rowdiv);
         let counter = 0;
 
         for (let i = 0 ; i < response.length ; i++ ){
@@ -42,7 +46,7 @@
                 //
                 // newRow.deleteCell(0);
 
-                $('.container').find('#upperrow').last().after(rowdiv);
+                $('.container').find('.my-content-row').last().after(rowdiv);
 
                 $lastRow = rowdiv;
 
@@ -68,65 +72,12 @@
     }
 
     function getLastRow() {
-        return $('.container').find('#myrow').last();
+        return $('.container').find('.my-content-row').last();
     }
 
     function getCloneItem() {
         return $('.portfolio-item').last().clone();
     }
-
-    getSession();
-
-    // $(document).change(function(){
-    //
-    //     // let containerDiv = document.getElementsByClassName('container');
-    //
-    //     // document.getElementsByTagName('body')[0].appendChild(div);
-    //
-    //     let rowId = 1;
-    //
-    //     let filmId = '';
-    //     let hreff = '#';
-    //
-    //     let div =   '<div class="row" id="rowId"></div>';
-    //     let inputDiv =
-    //         '<div class="col-md-4 portfolio-item">' +
-    //             '<a href="">' +
-    //                 '<img class="img-responsive" src="http://placehold.it/700x400" alt=""/>' +
-    //             '</a>' +
-    //             '<h3>' +
-    //                 '<a href="" th:href="" id="filmId" onclick="clickFilm(id)">Фильм 1</a>' +
-    //             '</h3>' +
-    //             '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>' +
-    //         '</div>' ;
-    //
-    //     //noinspection JSValidateTypes
-    //     div.getElementById('rowId').id =rowId;
-    //
-    //     document.getElementsByClassName('container').appendChild(div);
-    //
-    //     for(let i = 1; i = session.size(); i++ ){
-    //
-    //         var idMovie = session[i].id;
-    //
-    //         inputDiv.getElementById('filmId').id = idMovie;
-    //
-    //         inputDiv.getElementById(idMovie).href = "/getSchedule/"+idMovie;
-    //
-    //         $("#"+i).html(inputDiv);
-    //
-    //         if ((i % 3) === 0){
-    //             rowId++;
-    //
-    //             document.getElementsByClassName('container').appendChild(div);
-    //
-    //             //noinspection JSValidateTypes
-    //             div.getElementById('rowId').id =rowId;
-    //         }
-    //
-    //     }
-    //
-    // });
 
 })();
 

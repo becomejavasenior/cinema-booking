@@ -6,7 +6,6 @@
 
     getSession(filmId);
 
-
     function getSession(filmId) {
         let session = {};
 

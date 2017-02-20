@@ -1,11 +1,9 @@
 package ua.cinemabooking.controllers;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import ua.cinemabooking.repository.SeansRepository;
 
 /**
  * Created by macbookair on 04.02.17.
@@ -15,8 +13,8 @@ import ua.cinemabooking.repository.SeansRepository;
 public class ControllerView extends BaseController{
 
 
-    @Autowired
-    SeansRepository seansRepository;
+//    @Autowired
+//    SeansRepository seansRepository;
 
     @RequestMapping(value = {"/" ,"/afisha"}, method = RequestMethod.GET)
     public String getAfisha(){

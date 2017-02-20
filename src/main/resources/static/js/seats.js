@@ -4,24 +4,26 @@ var s1 = {};
 
     let locationPathName = window.location.pathname;
     let n = locationPathName.lastIndexOf('/');
-    let filmId = locationPathName.substring(n + 1);
-
+    let seansId = locationPathName.substring(n + 1);
 
     let placeNumber = 0;
 
-    let session = getSession(filmId);
+    let session1 = getSession(seansId);
 
-    function getSession(filmId) {
+    setHref(seansId);
+
+
+    function getSession(seansId) {
         let session = {};
 
         console.log('Перед запросом');
 
         $.ajax({
-            url: '/getSeats/' + filmId,
+            url: '/getSeats/' + seansId,
             method: 'GET',
             success: function (response) {
                 session.price = response.price;
-                session.filmId = filmId;
+                session.seansId = seansId;
                 session.filmName = response.filmName;
                 session.filmDate = response.filmDate;
                 session.map = response.map;
@@ -41,8 +43,30 @@ var s1 = {};
         });
     }
 
+    function setHref(seansId) {
+
+        let myHref = $('#hrefToSchedule');
+
+        let filmId ;
+        var name;
+        $.ajax({
+
+            url: '/getFilmIdBySeansId/'+seansId,
+            method: 'GET',
+            success: function (response) {
+                console.log("внутри "+response.id);
+                console.log(response.name);
+                myHref.attr('href', "/seans/"+response.id);
+                myHref.text("Сеансы "+response.name);
+
+                $('#hrefToSchedule').val(myHref);
+                return response;
+            }
+        });
 
 
+
+    }
 
 
     function getUnavailable(map) {
@@ -168,7 +192,7 @@ var s1 = {};
 
         let clientOrder = {
             email : $('#email-input').val(),
-            seansId : filmId,
+            seansId : seansId,
             placeId : arr[placeNumber]
         };
 
@@ -188,6 +212,7 @@ var s1 = {};
         return false;
     });
 
+
 //sum total money
     function recalculateTotal(sc,session) {
         let total = 0;
@@ -197,4 +222,6 @@ var s1 = {};
 
         return total;
     }
+
+
 })();
