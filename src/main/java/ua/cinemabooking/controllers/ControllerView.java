@@ -12,10 +12,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Controller(value = "/")
 public class ControllerView extends BaseController{
 
-
-//    @Autowired
-//    SeansRepository seansRepository;
-
     @RequestMapping(value = {"/" ,"/afisha"}, method = RequestMethod.GET)
     public String getAfisha(){
 
@@ -23,14 +19,13 @@ public class ControllerView extends BaseController{
     }
 
     @RequestMapping(value = "/seans/{filmId}", method = RequestMethod.GET)
-    public String getPayment(Model model){
-
+    public String getPayment(){
 
         return "schedule";
     }
 
     @RequestMapping(value = "/seats/{seansId}", method = RequestMethod.GET)
-    public String getSeats(Model model){
+    public String getSeats(){
 
         return "seats";
     }
