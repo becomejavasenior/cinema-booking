@@ -12,7 +12,6 @@ import ua.cinemabooking.repository.SeansRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.List;
 import java.util.Random;
 
 @Service
@@ -70,17 +69,17 @@ public class Populator {
     }
 
     private void populatePlaces() {
-        List<Seans> all = (List<Seans>) seansRepository.findAll();
-        for (Seans seans : all) {
-            for (int i = 1; i < SEATS; i++) {
-                for (int j = 1; j < ROWS; j++) {
+//        List<Seans> all = (List<Seans>) seansRepository.findAll();
+//        for (Seans seans : all) {
+            for (int i = 1; i < SEATS+1; i++) {
+                for (int j = 1; j < ROWS+1; j++) {
                     Place place = new Place();
                     place.setX(i);
                     place.setY(j);
                     placeRepository.save(place);
                     System.out.println(place);
                 }
-            }
+//            }
         }
     }
 
