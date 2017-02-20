@@ -71,8 +71,8 @@ public class Populator {
     private void populatePlaces() {
 //        List<Seans> all = (List<Seans>) seansRepository.findAll();
 //        for (Seans seans : all) {
-            for (int i = 1; i < SEATS; i++) {
-                for (int j = 1; j < ROWS; j++) {
+            for (int i = 1; i < SEATS+1; i++) {
+                for (int j = 1; j < ROWS+1; j++) {
                     Place place = new Place();
                     place.setX(i);
                     place.setY(j);

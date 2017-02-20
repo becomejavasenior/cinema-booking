@@ -47,23 +47,22 @@ var s1 = {};
 
         let myHref = $('#hrefToSchedule');
 
-        let filmId ;
+        let filmId;
         var name;
         $.ajax({
 
-            url: '/getFilmIdBySeansId/'+seansId,
+            url: '/getFilmIdBySeansId/' + seansId,
             method: 'GET',
             success: function (response) {
-                console.log("внутри "+response.id);
+                console.log("внутри " + response.id);
                 console.log(response.name);
-                myHref.attr('href', "/seans/"+response.id);
-                myHref.text("Сеансы "+response.name);
+                myHref.attr('href', "/seans/" + response.id);
+                myHref.text("Сеансы " + response.name);
 
                 $('#hrefToSchedule').val(myHref);
                 return response;
             }
         });
-
 
 
     }
@@ -84,7 +83,7 @@ var s1 = {};
             }
             seat++;
         }
-        
+
         return unavailable;
     }
 
@@ -139,14 +138,14 @@ var s1 = {};
                     let r2 = 0;
 
 
-                    r1 = 10*(this.settings.row);
+                    r1 = 10 * (this.settings.row);
                     r2 = this.settings.label;
 
-                    placeNumber = r1+r2;
+                    placeNumber = r1 + r2;
                     console.log(placeNumber)
 
                     $counter.text(sc.find('selected').length + 1);
-                    $total.text(recalculateTotal(sc,session) + session.price);
+                    $total.text(recalculateTotal(sc, session) + session.price);
 
                     return 'selected';
                 } else if (this.status() == 'selected') { //Checked
@@ -154,7 +153,7 @@ var s1 = {};
                     //Update Number
                     $counter.text(sc.find('selected').length - 1);
                     //update totalnum
-                    $total.text(recalculateTotal(sc,session) - session.price);
+                    $total.text(recalculateTotal(sc, session) - session.price);
 
                     //Delete reservation
                     $('#cart-item-' + this.settings.id).remove();
@@ -178,22 +177,20 @@ var s1 = {};
     }
 
     $('.pay-form .submit').on('click', function () {
-    // $('#test1').on('click', function () {
-
 
         // FixMe убрать эти костыли
-        var obj = s1.map;
-        var arr = [];
+        let obj = s1.map;
+        let arr = [];
         for (var key in obj) {
             if (obj.hasOwnProperty(key)) {
                 arr.push(key);
             }
-        };
+        }
 
         let clientOrder = {
-            email : $('#email-input').val(),
-            seansId : seansId,
-            placeId : arr[placeNumber]
+            email: $('#email-input').val(),
+            seansId: seansId,
+            placeId: arr[placeNumber]
         };
 
 
@@ -213,8 +210,8 @@ var s1 = {};
     });
 
 
-//sum total money
-    function recalculateTotal(sc,session) {
+    // calculate total money
+    function recalculateTotal(sc, session) {
         let total = 0;
         sc.find('selected').each(function () {
             total += session.price;
