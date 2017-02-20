@@ -67,6 +67,9 @@
             counter++;
         }
 
+        // Here we draw random movies images
+        window.drawRandom.draw();
+
         return "ok";
 
     }
