@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title>Movies management</title>
+</head>
+<body>
+
+    <form action="/admin/save" method="post">
+        ID: <input type="text" name="id" th:value="${mov.id}" readonly/><br>
+        NAME: <input type="text" name="name" th:value="${mov.name}"/><br>
+        PRICE: <input type="text" name="price" th:value="${mov.price}"><br>
+        <input type="submit" value="Submit"/>
+    </form>
+
+    <table>
+        <tr th:each="movie:${movies}">
+            <td>
+                <span th:text="${movie.id}"></span>
+            </td>
+            <td>
+                <span th:text="${movie.name}"></span>
+            </td>
+            <td>
+                <span th:text="${movie.price}"></span>
+            </td>
+            <td>
+                <a th:href="@{'/admin/edit/' + ${movie.id}}">Edit</a> |
+                <a th:href="@{'/admin/delete/' + ${movie.id}}">Delete</a>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>

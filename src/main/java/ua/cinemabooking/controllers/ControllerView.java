@@ -13,6 +13,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class ControllerView extends BaseController{
 
 
+//    @Autowired
+//    SeansRepository seansRepository;
+
     @RequestMapping(value = {"/" ,"/afisha"}, method = RequestMethod.GET)
     public String getAfisha(){
 

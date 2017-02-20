@@ -27,7 +27,6 @@ import java.util.regex.Pattern;
 @RestController
 public class ControllerRest extends BaseController{
 
-
     @Autowired
     private TiketsService tiketsService;
 
@@ -93,6 +92,21 @@ public class ControllerRest extends BaseController{
                 return new ResponseEntity<Seats>(seats, HttpStatus.OK);
             }else return new ResponseEntity<Seats>(HttpStatus.NOT_FOUND);
         }else return new ResponseEntity<Seats>(HttpStatus.BAD_REQUEST);
+    }
+
+    @RequestMapping(value = "/getFilmIdBySeansId/{seansId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Movie> getFilmIdBySeansId(@PathVariable(name = "seansId") String seansId){
+        if (seansId != null){
+            Long id = Long.valueOf(seansId);
+            Seans one = seansRepository.findOne(id);
+            Movie movie = one.getMovie();
+            if (movie == null){
+                System.out.println("Нет movie");
+                return new ResponseEntity<Movie>(HttpStatus.NOT_FOUND);
+            }
+            return new ResponseEntity<Movie>(movie , HttpStatus.OK);
+        }else return new ResponseEntity<Movie>(HttpStatus.BAD_REQUEST);
+
     }
 
     private static final Pattern VALID_EMAIL_ADDRESS_REGEX =
