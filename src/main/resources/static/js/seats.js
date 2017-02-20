@@ -33,6 +33,11 @@ var s1 = {};
                 console.log('Результат запроса');
                 console.log(session);
 
+                console.log('Время');
+                console.log(new Date(session.filmDate).toLocaleString());
+
+
+
                 drawInfo(session);
                 drawSeats(session);
 
@@ -123,7 +128,6 @@ var s1 = {};
                 if (this.status() == 'available') { //optional seat
 
                     console.log('Первое число')
-                    // console.log(this.settings.row)
 
                     placeNumber = placeNumber + this.settings.row;
 
@@ -172,7 +176,8 @@ var s1 = {};
 
     function drawInfo(session) {
         $('.film-name').text(session.filmName);
-        $('.film-date').text(new Date(session.filmDate).toLocaleDateString())
+        $('.film-date').text(new Date(session.filmDate).toLocaleString());
+        $('title').text('Фильм ' + session.filmName + '. Сеанс на: ' + new Date(session.filmDate).toLocaleString())
     }
 
     $('.pay-form .submit').on('click', function () {
