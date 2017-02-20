@@ -1,22 +1,15 @@
-var s1 = {};
-
 (function () {
-
     let urlParams = new URLSearchParams(window.location.search);
     let seansId = urlParams.get('seansId');
 
     let placeNumber = 0;
+    let s1 = {};
 
-    let session1 = getSession(seansId);
-
+    getSession(seansId);
     setHref(seansId);
-
 
     function getSession(seansId) {
         let session = {};
-
-        console.log('Перед запросом');
-
         $.ajax({
             url: '/getSeats/' + seansId,
             method: 'GET',
@@ -33,16 +26,9 @@ var s1 = {};
                 console.log('Результат запроса');
                 console.log(session);
 
-                console.log('Время');
-                console.log(new Date(session.filmDate).toLocaleString());
-
-
-
                 drawInfo(session);
                 drawSeats(session);
-
                 s1 = session;
-                return session;
             }
         });
     }
@@ -50,25 +36,17 @@ var s1 = {};
     function setHref(seansId) {
 
         let myHref = $('#hrefToSchedule');
-
-        let filmId;
-        var name;
         $.ajax({
 
             url: '/getFilmIdBySeansId/' + seansId,
             method: 'GET',
             success: function (response) {
-                console.log("внутри " + response.id);
-                console.log(response.name);
                 myHref.attr('href', "/seans/" + response.id);
                 myHref.text("Сеансы " + response.name);
-
                 $('#hrefToSchedule').val(myHref);
                 return response;
             }
         });
-
-
     }
 
 
@@ -127,8 +105,6 @@ var s1 = {};
                 placeNumber = 0;
                 if (this.status() == 'available') { //optional seat
 
-                    console.log('Первое число')
-
                     placeNumber = placeNumber + this.settings.row;
 
                     $('<li>R' + (this.settings.row + 1) + ' S' + this.settings.label + '</li>')
@@ -136,16 +112,11 @@ var s1 = {};
                         .data('seatId', this.settings.id)
                         .appendTo($cart);
 
-
-                    let r1 = 0;
-                    let r2 = 0;
-
-
-                    r1 = 10 * (this.settings.row);
-                    r2 = this.settings.label;
+                    let r1 = 10 * (this.settings.row);
+                    let r2 = this.settings.label;
 
                     placeNumber = r1 + r2;
-                    console.log(placeNumber)
+                    console.log(placeNumber);
 
                     $counter.text(sc.find('selected').length + 1);
                     $total.text(recalculateTotal(sc, session) + session.price);
