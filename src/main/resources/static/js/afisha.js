@@ -1,131 +1,75 @@
-(function (){
+/**
+ * Created by Andrey on 2/19/2017.
+ */
 
-
-    function getSession(){
-        // let session = {};
-
-        $.ajax({
-            url: '/getAllFilms',
-            method: 'GET',
-            success: function (response) {
-                // session.price = response.price;
-                // session.filmId = filmId;
-                // session.filmName = response.filmName;
-                // session.filmDate = response.filmDate;
-                // session.map = response.map;
-
-                return drowSection(response);
+$(document).ready(function () {
+    window.count= -1;
+    var table = $('#movies').DataTable({
+        "bLengthChange": false,
+        "bAutoWidth": false,
+        "bFilter": false,
+        "ajax" : {
+            "url": "/getAllFilms",
+            "type": "POST"
+        },
+        serverSide:true,
+        columns: [
+            { "data": null, "title": "", "visible": false, "render": function(data){
+                window.count++;
+                return drawSection(data, count);
             }
-        });
-    }
-
-
-    function drowSection(response){
-
-        let rowdiv = $('<div class="row" id="myrow"></div>');
-
-        let counter = 0;
-
-        for (let i = 0 ; i < response.length ; i++ ){
-
-            let $lastRow = getLastRow();  //поиск последней строки
-
-            // let amountOfCol = $lastRow.children('.col').length; //колличесво
-
-            let newRow;
-
-            // let modAmount = amountOfCol % 3;
-            // (modAmount % 3 === 0) && (amountOfCol !== 0)
-            if ((counter % 3) === 0){
-
-                // newRow = $lastRow.clone();
-                //
-                // newRow.deleteCell(0);
-
-                $('.container').find('#upperrow').last().after(rowdiv);
-
-                $lastRow = rowdiv;
-
             }
+        ]
+    });
 
-            let $movieItem = response[i];
+});
 
-            let $curItem = getCloneItem();
+$(document).ready( function () {
+    $('#movies').on('page.dt', function() {
+        $("div.row.my-content-row").remove();
+        window.count=-1;
+    });
+} );
 
-            $curItem.find('h3').find('a').attr('href', '/seans/'+$movieItem.id).empty().append('<h4>'+$movieItem.name+'</h4>');
 
-            $curItem.show();
+function drawSection(response, counter){
 
-            $lastRow.append($curItem);
+    let rowdiv = $('<div class="row my-content-row"></div>');
 
-            getLastRow().val($lastRow);
+    $('.container').find(".my-header").after(rowdiv);
 
-            counter++;
-        }
+    let $lastRow = getLastRow();
 
-        return "ok";
+    let newRow;
+
+    if ((counter % 3) === 0) {
+
+        $('.container').find('.my-content-row').last().after(rowdiv);
+
+        $lastRow = rowdiv;
 
     }
 
-    function getLastRow() {
-        return $('.container').find('#myrow').last();
-    }
+    let $movieItem = response;
 
-    function getCloneItem() {
-        return $('.portfolio-item').last().clone();
-    }
+    let $curItem = getCloneItem();
 
-    getSession();
+    $curItem.find('h3').find('a').attr('href', '/seans/' + $movieItem.id).empty().append('<h4>' + $movieItem.name + '</h4>');
 
-    // $(document).change(function(){
-    //
-    //     // let containerDiv = document.getElementsByClassName('container');
-    //
-    //     // document.getElementsByTagName('body')[0].appendChild(div);
-    //
-    //     let rowId = 1;
-    //
-    //     let filmId = '';
-    //     let hreff = '#';
-    //
-    //     let div =   '<div class="row" id="rowId"></div>';
-    //     let inputDiv =
-    //         '<div class="col-md-4 portfolio-item">' +
-    //             '<a href="">' +
-    //                 '<img class="img-responsive" src="http://placehold.it/700x400" alt=""/>' +
-    //             '</a>' +
-    //             '<h3>' +
-    //                 '<a href="" th:href="" id="filmId" onclick="clickFilm(id)">Фильм 1</a>' +
-    //             '</h3>' +
-    //             '<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae.</p>' +
-    //         '</div>' ;
-    //
-    //     //noinspection JSValidateTypes
-    //     div.getElementById('rowId').id =rowId;
-    //
-    //     document.getElementsByClassName('container').appendChild(div);
-    //
-    //     for(let i = 1; i = session.size(); i++ ){
-    //
-    //         var idMovie = session[i].id;
-    //
-    //         inputDiv.getElementById('filmId').id = idMovie;
-    //
-    //         inputDiv.getElementById(idMovie).href = "/getSchedule/"+idMovie;
-    //
-    //         $("#"+i).html(inputDiv);
-    //
-    //         if ((i % 3) === 0){
-    //             rowId++;
-    //
-    //             document.getElementsByClassName('container').appendChild(div);
-    //
-    //             //noinspection JSValidateTypes
-    //             div.getElementById('rowId').id =rowId;
-    //         }
-    //
-    //     }
-    //
-    // });
+    $curItem.show();
 
-})();
+    $lastRow.append($curItem);
+
+    getLastRow().val($lastRow);
+
+    return "ok";
+
+}
+
+function getLastRow() {
+    return $('.container').find('.my-content-row').last();
+}
+
+function getCloneItem() {
+    return $('.portfolio-item').last().clone();
+}

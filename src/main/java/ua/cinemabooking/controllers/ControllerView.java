@@ -44,24 +44,4 @@ public class ControllerView extends BaseController{
         return "seats";
     }
 
-    @GetMapping("/test/index")
-    public String goHome() {
-        System.out.println("/test/index");
-        return "index";
-    }
-
-    @PostMapping(value = "/test/movies")
-    @ResponseBody
-    public DatatablesResponse<Movie> getAllMovies(HttpServletRequest request){
-        DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
-        return DatatablesResponse.build(moviePagination.getDataSet(criterias.getStart(), criterias.getLength()), criterias);
-    }
-
-    @PostMapping(value = "/test/seanses")
-    @ResponseBody
-    public DatatablesResponse<Seans> getAllSeanses(HttpServletRequest request){
-        DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
-        return DatatablesResponse.build(seansPagination.getDataSet(criterias.getStart(), criterias.getLength()), criterias);
-    }
-
 }
