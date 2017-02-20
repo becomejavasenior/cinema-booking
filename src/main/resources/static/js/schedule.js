@@ -19,7 +19,7 @@
 
                 for (var i=0; i<response.length; i++) {
 
-                    let hrefToSeats = "/seats/"+response[i].id;
+                    let hrefToSeats = "/seats.html?seansId="+response[i].id;
                     $(".list-seans").append(
                         "<div class=\"seans\">" +
                         "<p>" + response[i].start.hour + ":" +response[i].start.minute + "</p>" +

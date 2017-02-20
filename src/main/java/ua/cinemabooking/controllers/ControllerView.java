@@ -24,9 +24,9 @@ public class ControllerView extends BaseController{
         return "schedule";
     }
 
-    @RequestMapping(value = "/seats/{seansId}", method = RequestMethod.GET)
-    public String getSeats(){
-
-        return "seats";
-    }
+//    @RequestMapping(value = "/seats/{seansId}", method = RequestMethod.GET)
+//    public String getSeats(){
+//
+//        return "seats";
+//    }
 }

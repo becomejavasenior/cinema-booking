@@ -2,9 +2,8 @@ var s1 = {};
 
 (function () {
 
-    let locationPathName = window.location.pathname;
-    let n = locationPathName.lastIndexOf('/');
-    let seansId = locationPathName.substring(n + 1);
+    let urlParams = new URLSearchParams(window.location.search);
+    let seansId = urlParams.get('seansId');
 
     let placeNumber = 0;
 
