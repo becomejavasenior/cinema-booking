@@ -57,6 +57,7 @@
             let $curItem = getCloneItem();
 
             $curItem.find('h3').find('a').attr('href', '/seans/'+$movieItem.id).empty().append('<h4>'+$movieItem.name+'</h4>');
+            $curItem.find('.poster-link').attr('href', '/seans/'+$movieItem.id)
 
             $curItem.show();
 
