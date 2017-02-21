@@ -64,6 +64,9 @@ function drawSection(response, counter){
 
     getLastRow().val($lastRow);
 
+    // Here we draw random movies images
+    window.drawRandom.draw();
+
     return "ok";
 
 }

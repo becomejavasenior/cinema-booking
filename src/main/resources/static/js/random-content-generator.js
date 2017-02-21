@@ -1,4 +1,5 @@
 (function (window) {
+    console.log("random-contend-generator");
 
     let drawRandom = {
         draw(){
@@ -17,7 +18,6 @@
             });
         }
     };
-
 
     function drawInfo($portfolioItem, film) {
         $portfolioItem.find('img').attr('src', film.Poster);
