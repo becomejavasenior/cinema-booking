@@ -1,5 +1,7 @@
 package ua.cinemabooking.controllers;
 
+import com.github.dandelion.datatables.core.ajax.DatatablesCriterias;
+import com.github.dandelion.datatables.core.ajax.DatatablesResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,9 +16,12 @@ import ua.cinemabooking.repository.MovieRepository;
 import ua.cinemabooking.repository.PlaceRepository;
 import ua.cinemabooking.repository.SeansRepository;
 import ua.cinemabooking.service.TiketsService;
+import ua.cinemabooking.service.pagination.MoviePagination;
+import ua.cinemabooking.service.pagination.SeansPagination;
 import ua.cinemabooking.serviceModel.ClientOrder;
 import ua.cinemabooking.serviceModel.Seats;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +49,12 @@ public class ControllerRest extends BaseController {
         this.movieRepository = movieRepository;
     }
 
+
+    @Autowired
+    private MoviePagination moviePagination;
+
+    @Autowired
+    private SeansPagination seansPagination;
 
     @RequestMapping(value = "/createOrder", method = RequestMethod.POST,
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
@@ -87,13 +98,19 @@ public class ControllerRest extends BaseController {
 
     }
 
-    @RequestMapping(value = "/getAllFilms", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<List<Movie>> getAllFilms() {
 
-        List<Movie> listMovies = tiketsService.movieList();
-        if (listMovies != null) {
-            return new ResponseEntity<List<Movie>>(listMovies, HttpStatus.OK);
-        } else return new ResponseEntity<List<Movie>>(HttpStatus.NOT_FOUND);
+    @PostMapping(value = "/getAllFilms")
+    @ResponseBody
+    public DatatablesResponse<Movie> getAllFilms(HttpServletRequest request){
+        DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
+        return DatatablesResponse.build(moviePagination.getDataSet(criterias.getStart(), criterias.getLength()), criterias);
+    }
+
+    @PostMapping(value = "/getAllSeanses")
+    @ResponseBody
+    public DatatablesResponse<Seans> getAllSeanses(HttpServletRequest request){
+        DatatablesCriterias criterias = DatatablesCriterias.getFromRequest(request);
+        return DatatablesResponse.build(seansPagination.getDataSet(criterias.getStart(), criterias.getLength()), criterias);
     }
 
     @RequestMapping(value = "/getSeats/{seansId}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

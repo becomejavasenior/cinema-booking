@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+
 /**
  * Created by macbookair on 04.02.17.
  */
@@ -14,7 +15,6 @@ public class ControllerView extends BaseController{
 
     @RequestMapping(value = {"/" ,"/afisha"}, method = RequestMethod.GET)
     public String getAfisha(){
-
         return "afisha";
     }
 
@@ -29,4 +29,5 @@ public class ControllerView extends BaseController{
 //
 //        return "seats";
 //    }
+
 }

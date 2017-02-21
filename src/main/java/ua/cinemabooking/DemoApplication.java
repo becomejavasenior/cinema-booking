@@ -12,7 +12,6 @@ import javax.annotation.PostConstruct;
 @SpringBootApplication
 public class DemoApplication {
 
-
     private final Populator populator;
     private final TiketsService tiketsService;
 
@@ -26,7 +25,6 @@ public class DemoApplication {
         SpringApplication.run(DemoApplication.class, args);
     }
 
-
     /**
      * Comment lines should uncomment once in the Production deploy for initialization objects in our database
      * and then it should comment again
@@ -37,6 +35,5 @@ public class DemoApplication {
             populator.init();
         }
     }
-
 
 }

@@ -1,107 +1,77 @@
-(function (){
 
+/**
+ * Created by Andrey on 2/19/2017.
+ */
 
-    deleteAllContent();
-    getSession();
-
-    function getSession(){
-    // let session = {};
-
-        $.ajax({
-            url: '/getAllFilms',
-            method: 'GET',
-            success: function (response) {
-
-                let status = drowSection(response);
-                console.log(status)
-                return status;
+$(document).ready(function () {
+    window.count= -1;
+    var table = $('#movies').DataTable({
+        "bLengthChange": false,
+        "bAutoWidth": false,
+        "bFilter": false,
+        "ajax" : {
+            "url": "/getAllFilms",
+            "type": "POST"
+        },
+        serverSide:true,
+        columns: [
+            { "data": null, "title": "", "visible": false, "render": function(data){
+                window.count++;
+                return drawSection(data, count);
             }
-        });
-    }
-
-    function deleteAllContent() {
-        $('.row .my-content-row').remove();
-    }
-
-    function drowSection(response){
-
-        let rowdiv = $('<div class="row my-content-row"></div>');
-
-        $('.container').find(".my-header").after(rowdiv);
-        let counter = 0;
-
-        for (let i = 0 ; i < response.length ; i++ ){
-
-            let $lastRow = getLastRow();  //поиск последней строки
-
-            // let amountOfCol = $lastRow.children('.col').length; //колличесво
-
-            let newRow;
-
-            // let modAmount = amountOfCol % 3;
-            // (modAmount % 3 === 0) && (amountOfCol !== 0)
-            if ((counter % 3) === 0){
-
-                // newRow = $lastRow.clone();
-                //
-                // newRow.deleteCell(0);
-
-                $('.container').find('.my-content-row').last().after(rowdiv);
-
-                $lastRow = rowdiv;
-
             }
+        ]
+    });
 
-            let $movieItem = response[i];
+});
 
-            let $curItem = getCloneItem();
 
-            $curItem.find('h3').find('a').attr('href', '/seans/'+$movieItem.id).empty().append('<h4>'+$movieItem.name+'</h4>');
-            $curItem.find('.poster-link').attr('href', '/seans/'+$movieItem.id)
+$(document).ready( function () {
+    $('#movies').on('page.dt', function() {
+        $("div.row.my-content-row").remove();
+        window.count=-1;
+    });
+} );
 
-            $curItem.show();
 
-            $lastRow.append($curItem);
+function drawSection(response, counter){
 
-            getLastRow().val($lastRow);
+    let rowdiv = $('<div class="row my-content-row"></div>');
 
-            counter++;
-        }
+    $('.container').find(".my-header").after(rowdiv);
 
-        // Here we draw random movies images
-        window.drawRandom.draw();
+    let $lastRow = getLastRow();
 
-        return "ok";
+    let newRow;
+
+    if ((counter % 3) === 0) {
+
+        $('.container').find('.my-content-row').last().after(rowdiv);
+
+        $lastRow = rowdiv;
 
     }
 
-    function getLastRow() {
-        return $('.container').find('.my-content-row').last();
-    }
+    let $movieItem = response;
 
-    function getCloneItem() {
-        return $('.portfolio-item').last().clone();
-    }
+    let $curItem = getCloneItem();
 
-})();
+    $curItem.find('h3').find('a').attr('href', '/seans/' + $movieItem.id).empty().append('<h4>' + $movieItem.name + '</h4>');
 
+    $curItem.show();
 
+    $lastRow.append($curItem);
 
+    getLastRow().val($lastRow);
 
+    return "ok";
 
+}
 
+function getLastRow() {
+    return $('.container').find('.my-content-row').last();
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+function getCloneItem() {
+    return $('.portfolio-item').last().clone();
+}
