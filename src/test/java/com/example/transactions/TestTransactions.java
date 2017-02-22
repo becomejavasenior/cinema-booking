@@ -20,7 +20,9 @@ import ua.cinemabooking.serviceModel.Seats;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -75,7 +77,7 @@ public class TestTransactions extends CinemaApplicationTests{
         place.setX(2);
         place.setY(5);
 
-        BillOrder order = tiketsService.createOrder(seans1, email, place);
+        BillOrder order = tiketsService.createOrder(seans1, email, new HashSet<>(Arrays.asList(place)));
 
         assertNotNull(order);
         assertNotNull(order.getId());
@@ -105,7 +107,7 @@ public class TestTransactions extends CinemaApplicationTests{
         place.setX(2);
         place.setY(5);
 
-        BillOrder order = tiketsService.createOrder(seans1, email, place);
+        BillOrder order = tiketsService.createOrder(seans1, email, new HashSet<>(Arrays.asList(place)));
 
         assertNotNull(order);
 
@@ -153,6 +155,10 @@ public class TestTransactions extends CinemaApplicationTests{
 
         assertNotNull(movies.get(0));
         assertNotNull(movies.get(0).getId());
+
+        movies.forEach((e)->{
+            logger.info(String.valueOf(e.getId()));
+        });
 
         logger.info(String.valueOf(movies.get(0).getId()));
 

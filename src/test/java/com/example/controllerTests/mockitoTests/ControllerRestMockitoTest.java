@@ -72,13 +72,14 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
 
         ClientOrder order = getClientOrder();
         Seans seans = getSeansById(order.getSeansId());
-        Place place = getPlaceById(order.getPlaceId());
+//        Place place = getPlaceById(order.getPlaceId());
+        Set<Place> placeSet = getPlaceSet(order.getPlaceIdSet());
 
-        when(placeRepository.findOne(any(Long.class))).thenReturn(place);
+        when(placeRepository.findAll(order.getPlaceIdSet())).thenReturn(placeSet);
         when(seansRepository.findOne(any(Long.class))).thenReturn(seans);
 
-        when(tiketsService.createOrder(seans, order.getEmail(), place)).
-                thenReturn(getBillOrder(place.getX(), place.getY(), seans));
+        when(tiketsService.createOrder(seans, order.getEmail(), placeSet)).
+                thenReturn(getBillOrderByPlacesAmount(placeSet.size(), seans));
 
         String uri = "/createOrder";
 
@@ -92,7 +93,7 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
 
         int status = result.getResponse().getStatus();
 
-        verify(tiketsService, times(1)).createOrder(seans, order.getEmail(), place);
+        verify(tiketsService, times(1)).createOrder(seans, order.getEmail(), placeSet);
 
         Assert.assertEquals("failure -> expected status 201 ", 201, status);
         //Assert.assertTrue("failure -> expected content ", content.trim().length() > 0);
@@ -184,12 +185,21 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
         placeList.forEach((p) -> {
             final boolean[] r = {true};
             orderList.forEach((order) -> {
-                if (order.getPlace().getX().equals(p.getX()) && order.getPlace().getY().equals(p.getY()) && order.isPayed())
-                    r[0] = false;
+                //hаскоментировать
+                if (order.isPayed()){
+
+                    order.getPlaceSet().forEach((place1 -> {
+
+                        if (place1.getX().equals(p.getX()) && place1.getY().equals(p.getY()))
+                            r[0] = false;
+                    }));
+                }
+
+
             });
             freeseats.put(p.getId(), r[0]);
         });
-
+//
 //        for (int x = 0; x <xAmount; x++) {
 //
 //            for (int y = 0; y <yAmount ; y++) {
@@ -247,6 +257,15 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
 
     private BillOrder getBillOrder(int x, int y, Seans seans) {
 
+        BillOrder billOrder = getBillOrderByPlacesAmount(1, seans);
+//        hаскоментировать
+        billOrder.setPlaceSet(new HashSet<>(Arrays.asList(getPlace(x, y))));
+
+        return billOrder;
+    }
+
+    private BillOrder getBillOrderByPlacesAmount(int amount, Seans seans){
+
         BillOrder billOrder = new BillOrder();
         Random random = new Random();
         int i = random.nextInt(1);
@@ -258,17 +277,31 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
         } else {
             billOrder.setPayed(false);
         }
-        billOrder.setPlace(getPlace(x, y));
+        Set<Place> set = new HashSet<>();
+        for (int j = 0; j < amount; j++) {
+            set.add(getPlace(i, 1));
+        }
         billOrder.setSeans(seans);
 
         return billOrder;
     }
+
 
     private Place getPlaceById(Long id) {
 
         Place place = getPlace(8, 8);
         place.setId(id);
         return place;
+    }
+
+    private Set<Place> getPlaceSet(Set<Long> idSet){
+        Set<Place> placeSet = new HashSet<>();
+
+        idSet.forEach((id)->{
+            placeSet.add(getPlaceById(id));
+        });
+
+        return placeSet;
     }
 
     private Place getPlace(int x, int y) {
@@ -348,16 +381,12 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
     private ClientOrder getClientOrder() {
         ClientOrder order = new ClientOrder();
         order.setEmail("email1234@gmail.com");
-//        List<Place> placeList = (List<Place>) placeRepository.findAll();
-//        if (placeList != null) {
-//            order.setPlaceId(placeList.get(0).getId());
-//        }
-//        List<Seans> list = (List<Seans>) seansRepository.findAll();
-//        if (list != null){
-//            order.setSeansId(list.get(0).getId());
-//        }
+
         Random random = new Random();
-        order.setPlaceId((long) random.nextInt(10000));
+        //hаскоментировать
+        Set<Long> set = new HashSet<>(Arrays.asList((long) random.nextInt(10000), (long) random.nextInt(10000), (long) random.nextInt(10000)));
+
+        order.setPlaceId(set);
         order.setSeansId((long) random.nextInt(10000));
         return order;
     }

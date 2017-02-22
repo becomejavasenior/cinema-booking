@@ -25,6 +25,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by macbookair on 04.02.17.
@@ -60,9 +61,9 @@ public class ControllerRest extends BaseController {
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, String>> createNewOrder(@Valid @RequestBody ClientOrder clientOrder) {
 
-        Place place = placeRepository.findOne(clientOrder.getPlaceId());
+        Set<Place> placeSet = (Set<Place>) placeRepository.findAll(clientOrder.getPlaceIdSet());
 
-        if (place == null) {
+        if (placeSet == null || placeSet.size() == 0) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
 
@@ -70,10 +71,12 @@ public class ControllerRest extends BaseController {
 
         Movie movie = movieRepository.findOne(seans.getMovie().getId());
 
-        BillOrder billOrder = tiketsService.createOrder(seans, clientOrder.getEmail(), place);
+        BillOrder billOrder = tiketsService.createOrder(seans, clientOrder.getEmail(), placeSet);
+
+        Integer price = movie.getPrice().intValueExact()*placeSet.size();
 
         if (billOrder != null) {
-            Map<String, String> resultParams = liqPayService.liqPayGenerateParamForHtmlForm(billOrder.getId(), movie.getPrice().intValueExact());
+            Map<String, String> resultParams = liqPayService.liqPayGenerateParamForHtmlForm(billOrder.getId(),price);
             return new ResponseEntity<>(resultParams, HttpStatus.CREATED);
         } else {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

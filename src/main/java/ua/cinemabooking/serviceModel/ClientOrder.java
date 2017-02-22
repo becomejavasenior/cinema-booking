@@ -1,9 +1,9 @@
 package ua.cinemabooking.serviceModel;
 
 import org.hibernate.validator.constraints.Email;
-import org.springframework.stereotype.Component;
 
 import javax.validation.constraints.NotNull;
+import java.util.Set;
 
 /**
  * Created by macbookair on 12.02.17.
@@ -20,16 +20,24 @@ public class ClientOrder {
     private Long seansId;
 
     @NotNull
-    private Long placeId;
+    private Set<Long> placeIdSet;
 
     public ClientOrder(){
 
     }
 
-    public ClientOrder(String email, Long seansId, Long placeId) {
+    public ClientOrder(String email, Long seansId, Set<Long> placeIdSet) {
         this.email = email;
         this.seansId = seansId;
-        this.placeId = placeId;
+        this.placeIdSet = placeIdSet;
+    }
+
+    public Set<Long> getPlaceIdSet() {
+        return placeIdSet;
+    }
+
+    public void setPlaceId(Set<Long> placeIdSet) {
+        this.placeIdSet = placeIdSet;
     }
 
     public String getEmail() {
@@ -48,11 +56,5 @@ public class ClientOrder {
         this.seansId = seansId;
     }
 
-    public Long getPlaceId() {
-        return placeId;
-    }
 
-    public void setPlaceId(Long placeId) {
-        this.placeId = placeId;
-    }
 }

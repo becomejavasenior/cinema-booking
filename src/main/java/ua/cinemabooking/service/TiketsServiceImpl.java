@@ -15,6 +15,7 @@ import ua.cinemabooking.serviceModel.Seats;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Created by Artem on 04.02.2017.
@@ -31,11 +32,11 @@ public class TiketsServiceImpl implements  TiketsService {
     private PlaceRepository placeRepository;
 
     @Override
-    public BillOrder createOrder(Seans seans, String email, Place place) {
+    public BillOrder createOrder(Seans seans, String email, Set<Place> placeSet) {
         BillOrder billOrder = new BillOrder();
         billOrder.setSeans(seans);
         billOrder.setEmail(email);
-        billOrder.setPlace(place);
+        billOrder.setPlaceSet(placeSet);
         billOrder.setPayed(false);
         return billOrderRepository.save(billOrder);
     }
@@ -68,8 +69,19 @@ public class TiketsServiceImpl implements  TiketsService {
             final boolean[] resalt = {true};
             orderList.forEach((order) ->{
 
-                if (order.getPlace().getX().equals(place.getX()) && order.getPlace().getY().equals(place.getY()) && order.isPayed())
-                    resalt[0] = false;
+                if (order.isPayed()){
+
+                    order.getPlaceSet().forEach((place1 -> {
+
+                        if (place1.getX().equals(place.getX()) && place1.getY().equals(place.getY()))
+                            resalt[0] = false;
+                    }));
+                }
+
+
+//
+//                if (order.getPlace().getX().equals(place.getX()) && order.getPlace().getY().equals(place.getY()) && order.isPayed())
+//                    resalt[0] = false;
             });
 
             freeseats.put(place.getId(), resalt[0]);

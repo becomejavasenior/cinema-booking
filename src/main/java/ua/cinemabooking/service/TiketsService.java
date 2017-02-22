@@ -7,6 +7,7 @@ import ua.cinemabooking.model.Seans;
 import ua.cinemabooking.serviceModel.Seats;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by Artem on 04.02.2017.
@@ -14,7 +15,7 @@ import java.util.List;
 public interface TiketsService {
 
 
-    public BillOrder createOrder(Seans seans, String email, Place place);
+    public BillOrder createOrder(Seans seans, String email, Set<Place> place);
 
     public BillOrder afterPay(BillOrder billOrder);
 
