@@ -2,10 +2,8 @@ package ua.cinemabooking.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -13,12 +11,13 @@ import java.util.Set;
  * Created by RATIBOR on 04.02.2017.
  */
 @Entity
-public class Place {
+public class Place implements Serializable {
     @Id @GeneratedValue
     private Long id;
     private Integer x;
     private Integer y;
 
+    @ElementCollection(targetClass=HashSet.class)
     private Set<BillOrder> billOrders = new HashSet<>();
 
     @ManyToMany(mappedBy = "placeSet")

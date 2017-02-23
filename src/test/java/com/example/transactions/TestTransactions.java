@@ -164,6 +164,8 @@ public class TestTransactions extends CinemaApplicationTests{
 
         List<Seans> collection = tiketsService.seansList(movies.get(0).getId());
 
+        List<Seans> collection2 = (List<Seans>)seansRepository.findAll();
+
         assertNotNull(collection);
 
         assertTrue(collection.size() > 0);

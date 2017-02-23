@@ -1,13 +1,14 @@
 package ua.cinemabooking.model;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
  * Created by RATIBOR on 04.02.2017.
  */
 @Entity
-public class Seans {
+public class Seans implements Serializable {
 
     @Id
     @GeneratedValue

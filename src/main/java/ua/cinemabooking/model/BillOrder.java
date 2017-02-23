@@ -3,6 +3,7 @@ package ua.cinemabooking.model;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -12,7 +13,7 @@ import java.util.Set;
  * Created by RATIBOR on 04.02.2017.
  */
 @Entity
-public class BillOrder {
+public class BillOrder implements Serializable {
 
     @Id @GeneratedValue
     private Long id;
@@ -28,6 +29,8 @@ public class BillOrder {
 
     //то что было изменено, надо мониторить почему посыпались проблемы в тестах, только из-за одной строчки
 
+
+    @ElementCollection(targetClass=HashSet.class)
     private Set<Place> placeSet = new HashSet<>();
 
     @ManyToOne(targetEntity = Seans.class, fetch = FetchType.EAGER)
