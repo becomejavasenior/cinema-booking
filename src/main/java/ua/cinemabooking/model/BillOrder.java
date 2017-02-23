@@ -1,8 +1,11 @@
 package ua.cinemabooking.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -25,7 +28,8 @@ public class BillOrder {
 
     //то что было изменено, надо мониторить почему посыпались проблемы в тестах, только из-за одной строчки
 
-    private Set<Place> placeSet;
+    private Set<Place> placeSet = new HashSet<>();
+
     @ManyToOne(targetEntity = Seans.class, fetch = FetchType.EAGER)
     private Seans seans;
 
@@ -62,7 +66,11 @@ public class BillOrder {
 //    public void setPlace(Place place) {
 //        this.place = place;
 //    }
-    @OneToMany(mappedBy = "billOrder",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//    @OneToMany(mappedBy = "billOrder",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "billorder_place", joinColumns = @JoinColumn(name = "billorder_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "place_id", referencedColumnName = "id"))
+    @JsonManagedReference
     public Set<Place> getPlaceSet() {
         return placeSet;
     }
