@@ -12,14 +12,17 @@ import ua.cinemabooking.repository.SeansRepository;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.time.Month;
-import java.util.Random;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 public class Populator {
 
+    private static final int SEANS = 7;
     private static final int SEANSES_STARTS = 9;
     private static final int SEANSES_ENDS = 23;
-    private static final int MOVIES_NUMBER = 100;
+    private static final int MOVIES_NUMBER = 10;
     private static final int ROWS = 10;
     private static final int SEATS = 10;
 
@@ -44,28 +47,45 @@ public class Populator {
     }
 
     private void populateSeanses() {
-        for (int i = SEANSES_STARTS; i < SEANSES_ENDS; i++) {
-            Seans seans = new Seans();
-            LocalDateTime start = LocalDateTime.of(2017, Month.FEBRUARY, 4, i, 0);
-            seans.setStart(start);
-            LocalDateTime end = LocalDateTime.of(2017, Month.FEBRUARY, 4, i, 55);
-            seans.setEnd(end);
-            Random r = new Random();
+//        for (int i = SEANSES_STARTS; i < SEANSES_ENDS; i++) {
+        int currTime = SEANSES_STARTS;
+//        int currEnd = SEANSES_ENDS;
+
+        Collection<Seans> seansCollection = new LinkedList<>();
+        for (int i = 0; i < SEANS; i++) {
+
+            List<Movie> movieList = (List<Movie>) movieRepository.findAll();
+            if (movieList.size() == MOVIES_NUMBER) {
+                for (int j = 0; j < MOVIES_NUMBER; j++) {
+                    Seans seans = new Seans();
+                    LocalDateTime start = LocalDateTime.of(2017, Month.FEBRUARY, 4, currTime , 0);
+
+                    seans.setStart(start);
+                    LocalDateTime end = LocalDateTime.of(2017, Month.FEBRUARY, 4, (currTime+2), 55);
+                    seans.setEnd(end);
+                    seans.setMovie(movieList.get(j));
+                    seansCollection.add(seans);
+                }
+            }else System.out.println("ОШИБКА В ЗПОЛНЕНИИ MOVIE");
+
+            currTime+=2;
+//            Random r = new Random();
 //            List<Movie> all = (List<Movie>) movieRepository.findAll();
 //            int size = all.size();
 
             //These lines were changed because tests have shown that simple random by range(10) is not working
-            Long maxId = Long.valueOf(movieRepository.getMaxCode());
-            Long minId = Long.valueOf(movieRepository.getMinCode());
-            Movie movie = movieRepository.findOne(minId + (long) r.nextInt((int) (maxId - minId + 1)));
+//            Long maxId = Long.valueOf(movieRepository.getMaxCode());
+//            Long minId = Long.valueOf(movieRepository.getMinCode());
+//            Movie movie = movieRepository.findOne(minId + (long) r.nextInt((int) (maxId - minId + 1)));
 
 
 //            Movie movie = movieRepository.findOne((long) r.nextInt(size));
 
-            seans.setMovie(movie);
-            seansRepository.save(seans);
-            System.out.println(seans);
+//            seans.setMovie(movie);
+//            seansRepository.save(seans);
+//            System.out.println(seans);
         }
+        seansRepository.save(seansCollection);
     }
 
     private void populatePlaces() {

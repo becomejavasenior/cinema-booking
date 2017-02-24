@@ -43,7 +43,7 @@ public class LiqPayRestController {
         Object obj = parser.parse(json);
         JSONObject jsonObj = (JSONObject) obj;
 
-        String orderId = String.valueOf(jsonObj.get("oreder_id"));
+        String orderId = String.valueOf(jsonObj.get("order_id"));
 
         BillOrder billOrder = billOrderRepository.findOne(Long.valueOf(orderId));
 

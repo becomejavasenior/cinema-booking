@@ -73,12 +73,12 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
         ClientOrder order = getClientOrder();
         Seans seans = getSeansById(order.getSeansId());
 //        Place place = getPlaceById(order.getPlaceId());
-        Set<Place> placeSet = getPlaceSet(order.getPlaceIdSet());
+        List<Place> placeSet = getPlaceSet(order.getPlaceIdSet());
 
-        when(placeRepository.findAll(order.getPlaceIdSet())).thenReturn(placeSet);
+        when(placeRepository.findAll(anyListOf(Long.class))).thenReturn(placeSet);
         when(seansRepository.findOne(any(Long.class))).thenReturn(seans);
 
-        when(tiketsService.createOrder(seans, order.getEmail(), placeSet)).
+        when(tiketsService.createOrder(seans, order.getEmail(), new HashSet<>(placeSet))).
                 thenReturn(getBillOrderByPlacesAmount(placeSet.size(), seans));
 
         String uri = "/createOrder";
@@ -93,7 +93,7 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
 
         int status = result.getResponse().getStatus();
 
-        verify(tiketsService, times(1)).createOrder(seans, order.getEmail(), placeSet);
+        verify(tiketsService, times(1)).createOrder(seans, order.getEmail(), new HashSet<>(placeSet));
 
         Assert.assertEquals("failure -> expected status 201 ", 201, status);
         //Assert.assertTrue("failure -> expected content ", content.trim().length() > 0);
@@ -151,7 +151,7 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
     @Test
     public void getSeatsBySeansIdTest() throws Exception {
 
-        Long id = getIdInAvaliableRange(100, 120);
+        Long id = getIdInAvaliableRange(0, 7);
 
         when(tiketsService.getSeats(id)).thenReturn(getSeats(id));
 
@@ -183,10 +183,12 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
 
 
         placeList.forEach((p) -> {
+
             final boolean[] r = {true};
+            assert orderList != null;
             orderList.forEach((order) -> {
                 //hаскоментировать
-                if (order.isPayed()){
+                if (order.isPayed()) {
 
                     order.getPlaceSet().forEach((place1 -> {
 
@@ -264,23 +266,22 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
         return billOrder;
     }
 
-    private BillOrder getBillOrderByPlacesAmount(int amount, Seans seans){
+
+    private BillOrder getBillOrderByPlacesAmount(int amount, Seans seans) {
 
         BillOrder billOrder = new BillOrder();
         Random random = new Random();
-        int i = random.nextInt(1);
-        billOrder.setId((long) random.nextInt(10000));
+        int i = 9;
+        billOrder.setId((long) random.nextInt(10));
         billOrder.setDataTime(LocalDateTime.of(2017, Month.FEBRUARY, 4, i, 0));
         billOrder.setEmail("email1234@gmail.com");
-        if (i == 1) {
-            billOrder.setPayed(true);
-        } else {
-            billOrder.setPayed(false);
-        }
+
+        billOrder.setPayed(false);
         Set<Place> set = new HashSet<>();
         for (int j = 0; j < amount; j++) {
-            set.add(getPlace(i, 1));
+            set.add(getPlace(j, 1));
         }
+        billOrder.setPlaceSet(set);
         billOrder.setSeans(seans);
 
         return billOrder;
@@ -294,10 +295,10 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
         return place;
     }
 
-    private Set<Place> getPlaceSet(Set<Long> idSet){
-        Set<Place> placeSet = new HashSet<>();
+    private List<Place> getPlaceSet(List<Long> idSet) {
+        List<Place> placeSet = new LinkedList<>();
 
-        idSet.forEach((id)->{
+        idSet.forEach((id) -> {
             placeSet.add(getPlaceById(id));
         });
 
@@ -317,12 +318,12 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
     private Seans getSeansById(Long id) {
 
         Seans seans = new Seans();
-        Random random = new Random(100);
+//        Random random = new Random(10);
         seans.setId(id);
-        int i = random.nextInt(9);
+        int i = 9;
         seans.setStart(LocalDateTime.of(2017, Month.FEBRUARY, 4, i, 0));
         seans.setMovie(getMovie());
-        seans.setEnd(LocalDateTime.of(2017, Month.FEBRUARY, 4, i, 55));
+        seans.setEnd(LocalDateTime.of(2017, Month.FEBRUARY, 4, i + 2, 55));
 
         return seans;
     }
@@ -384,9 +385,9 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
 
         Random random = new Random();
         //hаскоментировать
-        Set<Long> set = new HashSet<>(Arrays.asList((long) random.nextInt(10000), (long) random.nextInt(10000), (long) random.nextInt(10000)));
+        List<Long> set = new LinkedList<>(Arrays.asList((long) random.nextInt(10000), (long) random.nextInt(2000), (long) random.nextInt(30000)));
 
-        order.setPlaceId(set);
+        order.setPlaceIdSet(set);
         order.setSeansId((long) random.nextInt(10000));
         return order;
     }

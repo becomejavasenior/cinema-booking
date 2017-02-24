@@ -60,6 +60,9 @@ public class TiketsServiceImpl implements  TiketsService {
     public Seats getSeats(Long seansId) {
         Seans seans = seansRepository.findOne(seansId);
         List<BillOrder> orderList = billOrderRepository.findBySeans(seans);
+        if (orderList == null){
+            System.out.println("======================nuuuullll");
+        }
         List<Place> placeList = (List<Place>) placeRepository.findAll();
 
         Map<Long, Boolean> freeseats = new LinkedHashMap<>();
@@ -67,6 +70,7 @@ public class TiketsServiceImpl implements  TiketsService {
         placeList.forEach((place) ->{
 
             final boolean[] resalt = {true};
+            assert orderList != null;
             orderList.forEach((order) ->{
 
                 if (order.isPayed()){
