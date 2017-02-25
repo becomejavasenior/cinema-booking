@@ -70,7 +70,7 @@ public class BillOrder implements Serializable {
 //        this.place = place;
 //    }
 //    @OneToMany(mappedBy = "billOrder",fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.MERGE)
     @JoinTable(name = "billorder_place", joinColumns = @JoinColumn(name = "billorder_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "place_id", referencedColumnName = "id"))
     @JsonManagedReference

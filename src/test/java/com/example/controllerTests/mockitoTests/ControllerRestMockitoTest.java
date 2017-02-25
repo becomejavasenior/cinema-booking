@@ -388,7 +388,7 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
         List<Long> set = new LinkedList<>(Arrays.asList((long) random.nextInt(10000), (long) random.nextInt(2000), (long) random.nextInt(30000)));
 
         order.setPlaceIdSet(set);
-        order.setSeansId((long) random.nextInt(10000));
+        order.setSeansId((long) random.nextInt(10));
         return order;
     }
 

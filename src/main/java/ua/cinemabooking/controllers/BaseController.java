@@ -4,7 +4,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.ResponseBody;
 import ua.cinemabooking.exeptions.DefaultExceptionAttributes;
 import ua.cinemabooking.exeptions.ExceptionAttributes;
 
@@ -49,5 +51,10 @@ public class BaseController {
         logger.error("< hadleNoResultException");
 
         return new ResponseEntity<Map<String, Object>>(responseBody, HttpStatus.NOT_FOUND);
+    }
+    @ExceptionHandler
+    @ResponseBody
+    public ResponseEntity handleValidationException(MethodArgumentNotValidException exception) {
+        return new ResponseEntity<>(exception.getBindingResult(), HttpStatus.BAD_REQUEST);
     }
 }

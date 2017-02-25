@@ -3,6 +3,7 @@ package ua.cinemabooking.serviceModel;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  */
 
 
-public class ClientOrder {
+public class ClientOrder implements Serializable{
 
     @NotNull
     @Email
