@@ -2,14 +2,14 @@
     let urlParams = new URLSearchParams(window.location.search);
     let seansId = urlParams.get('seansId');
 
-    let placeNumber = 0;
-    let s1 = {};
+    let session = {};
+
+    let seatsForOrder = [];
 
     getSession(seansId);
     setHref(seansId);
 
     function getSession(seansId) {
-        let session = {};
         $.ajax({
             url: '/getSeats/' + seansId,
             method: 'GET',
@@ -28,7 +28,6 @@
 
                 drawInfo(session);
                 drawSeats(session);
-                s1 = session;
             }
         });
     }
@@ -102,27 +101,21 @@
                 ]
             },
             click: function () { //Click event
-                placeNumber = 0;
                 if (this.status() == 'available') { //optional seat
-
-                    placeNumber = placeNumber + this.settings.row;
 
                     $('<li>R' + (this.settings.row + 1) + ' S' + this.settings.label + '</li>')
                         .attr('id', 'cart-item-' + this.settings.id)
                         .data('seatId', this.settings.id)
                         .appendTo($cart);
 
-                    let r1 = 10 * (this.settings.row);
-                    let r2 = this.settings.label;
-
-                    placeNumber = r1 + r2;
-                    console.log(placeNumber);
+                    calculateSeatNumberFromId(this.settings.row, this.settings.label);
 
                     $counter.text(sc.find('selected').length + 1);
                     $total.text(recalculateTotal(sc, session) + session.price);
 
                     return 'selected';
                 } else if (this.status() == 'selected') { //Checked
+                    calculateSeatNumberFromId(this.settings.row, this.settings.label);
                     // ********* Снимаем выбор ***************** //
                     //Update Number
                     $counter.text(sc.find('selected').length - 1);
@@ -154,7 +147,7 @@
     $('.pay-form .submit').on('click', function () {
 
         // FixMe убрать эти костыли
-        let obj = s1.map;
+        let obj = session.map;
         let arr = [];
         for (var key in obj) {
             if (obj.hasOwnProperty(key)) {
@@ -165,9 +158,10 @@
         let clientOrder = {
             email: $('#email-input').val(),
             seansId: seansId,
-            placeId: arr[placeNumber]
+            placeIdList: seatsForOrder.map(s => arr[s])
         };
 
+        console.log(clientOrder);
 
         $.ajax({
             url: '/createOrder',
@@ -193,6 +187,27 @@
         });
 
         return total;
+    }
+
+
+    function updateSeatsForOrderArr(seatsForOrder, seatId) {
+        if (!seatsForOrder.includes(seatId)) {
+            seatsForOrder.push(seatId)
+        } else {
+
+            let index = seatsForOrder.indexOf(seatId);
+            if (index !== (-1)) {
+                seatsForOrder.splice(index, 1);
+            }
+        }
+        console.log('Результирующий массив с местами');
+        console.log(seatsForOrder)
+    }
+
+
+    function calculateSeatNumberFromId(row, col) {
+        let r1 = 10 * row;
+        updateSeatsForOrderArr(seatsForOrder, r1 + col)
     }
 
 
