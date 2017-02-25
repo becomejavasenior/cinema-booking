@@ -3,7 +3,7 @@ package ua.cinemabooking.serviceModel;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
-import java.util.Set;
+import java.util.List;
 
 /**
  * Created by macbookair on 12.02.17.
@@ -20,24 +20,24 @@ public class ClientOrder {
     private Long seansId;
 
     @NotNull
-    private Set<Long> placeIdSet;
+    private List<Long> placeIdList;
 
     public ClientOrder(){
 
     }
 
-    public ClientOrder(String email, Long seansId, Set<Long> placeIdSet) {
+    public ClientOrder(String email, Long seansId, List<Long> placeIdList) {
         this.email = email;
         this.seansId = seansId;
-        this.placeIdSet = placeIdSet;
+        this.placeIdList = placeIdList;
     }
 
-    public Set<Long> getPlaceIdSet() {
-        return placeIdSet;
+    public List<Long> getPlaceIdList() {
+        return placeIdList;
     }
 
-    public void setPlaceId(Set<Long> placeIdSet) {
-        this.placeIdSet = placeIdSet;
+    public void setPlaceIdList(List<Long> placeIdList) {
+        this.placeIdList = placeIdList;
     }
 
     public String getEmail() {

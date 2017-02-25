@@ -23,6 +23,7 @@ import ua.cinemabooking.serviceModel.Seats;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -61,7 +62,7 @@ public class ControllerRest extends BaseController {
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, String>> createNewOrder(@Valid @RequestBody ClientOrder clientOrder) {
 
-        Set<Place> placeSet = (Set<Place>) placeRepository.findAll(clientOrder.getPlaceIdSet());
+        Set<Place> placeSet = (Set<Place>) placeRepository.findAll(new HashSet<>(clientOrder.getPlaceIdList()));
 
         if (placeSet == null || placeSet.size() == 0) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

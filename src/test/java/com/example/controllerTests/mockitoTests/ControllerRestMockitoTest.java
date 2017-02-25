@@ -73,9 +73,9 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
         ClientOrder order = getClientOrder();
         Seans seans = getSeansById(order.getSeansId());
 //        Place place = getPlaceById(order.getPlaceId());
-        Set<Place> placeSet = getPlaceSet(order.getPlaceIdSet());
+        Set<Place> placeSet = getPlaceSet(new HashSet<>(order.getPlaceIdList()));
 
-        when(placeRepository.findAll(order.getPlaceIdSet())).thenReturn(placeSet);
+        when(placeRepository.findAll(order.getPlaceIdList())).thenReturn(placeSet);
         when(seansRepository.findOne(any(Long.class))).thenReturn(seans);
 
         when(tiketsService.createOrder(seans, order.getEmail(), placeSet)).
@@ -384,9 +384,9 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
 
         Random random = new Random();
         //hаскоментировать
-        Set<Long> set = new HashSet<>(Arrays.asList((long) random.nextInt(10000), (long) random.nextInt(10000), (long) random.nextInt(10000)));
+        List<Long> set = new ArrayList<>(Arrays.asList((long) random.nextInt(10000), (long) random.nextInt(10000), (long) random.nextInt(10000)));
 
-        order.setPlaceId(set);
+        order.setPlaceIdList(set);
         order.setSeansId((long) random.nextInt(10000));
         return order;
     }
