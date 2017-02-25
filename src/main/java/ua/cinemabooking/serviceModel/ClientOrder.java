@@ -21,16 +21,16 @@ public class ClientOrder implements Serializable{
     private Long seansId;
 
     @NotNull
-    private List<Long> placeIdSet;
+    private List<Long> placeIdList;
 
     public ClientOrder(){
 
     }
 
-    public ClientOrder(String email, Long seansId, List<Long> placeIdSet) {
+    public ClientOrder(String email, Long seansId, List<Long> placeIdList) {
         this.email = email;
         this.seansId = seansId;
-        this.placeIdSet = placeIdSet;
+        this.placeIdList = placeIdList;
     }
 
     public String getEmail() {
@@ -49,11 +49,11 @@ public class ClientOrder implements Serializable{
         this.seansId = seansId;
     }
 
-    public List<Long> getPlaceIdSet() {
-        return placeIdSet;
+    public List<Long> getPlaceIdList() {
+        return placeIdList;
     }
 
-    public void setPlaceIdSet(List<Long> placeIdSet) {
-        this.placeIdSet = placeIdSet;
+    public void setPlaceIdList(List<Long> placeIdList) {
+        this.placeIdList = placeIdList;
     }
 }
