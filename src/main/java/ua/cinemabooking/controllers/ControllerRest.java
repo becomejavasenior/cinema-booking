@@ -62,7 +62,8 @@ public class ControllerRest extends BaseController {
             produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, String>> createNewOrder(@Valid @RequestBody ClientOrder clientOrder) {
 
-        Set<Place> placeSet = (Set<Place>) placeRepository.findAll(new HashSet<>(clientOrder.getPlaceIdList()));
+        List<Place> placeList = (List<Place>) placeRepository.findAll(clientOrder.getPlaceIdList());
+        Set<Place> placeSet = new HashSet<>(placeList);
 
         if (placeSet == null || placeSet.size() == 0) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

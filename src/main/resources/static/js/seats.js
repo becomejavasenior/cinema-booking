@@ -158,7 +158,7 @@
         let clientOrder = {
             email: $('#email-input').val(),
             seansId: seansId,
-            placeId: seatsForOrder.map(s => arr[s])
+            placeIdList: seatsForOrder.map(s => arr[s])
         };
 
         console.log(clientOrder);

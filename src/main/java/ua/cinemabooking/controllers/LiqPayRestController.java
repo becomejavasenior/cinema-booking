@@ -19,7 +19,7 @@ import javax.xml.bind.DatatypeConverter;
 import java.math.BigDecimal;
 
 /**
- * @author Kobylyatskyy Alexander
+ * @author Kobylyatskyy Alexander and Tymoshenko Dmytro
  */
 @Controller
 @RequestMapping("/api/rest/liqpay")
@@ -34,7 +34,7 @@ public class LiqPayRestController {
      * Catch callback from bank
      */
     @RequestMapping(value = "/callback", method = RequestMethod.POST)
-    public ResponseEntity<Void> callback(@RequestParam(value = "signature", required = false, defaultValue = "") String signature,
+    public ResponseEntity<BillOrder> callback(@RequestParam(value = "signature", required = false, defaultValue = "") String signature,
                          @RequestParam(value = "data", required = false, defaultValue = "") String data,
                          @RequestBody(required = false) String body) throws Exception {
 
@@ -43,7 +43,8 @@ public class LiqPayRestController {
         Object obj = parser.parse(json);
         JSONObject jsonObj = (JSONObject) obj;
 
-        String orderId = String.valueOf(jsonObj.get("oreder_id"));
+
+        String orderId = String.valueOf(jsonObj.get("order_id"));
 
         BillOrder billOrder = billOrderRepository.findOne(Long.valueOf(orderId));
 
@@ -69,15 +70,19 @@ public class LiqPayRestController {
                     emailService.sendMessage("Your places from 'CINEMAbooking'", "Booking cinema bills",billOrder.getEmail());
 
                 }else if (status.equals("error")){
-                    return new ResponseEntity<Void>(HttpStatus.BAD_REQUEST);
+                    //это можно будет убрать6 когда придумаем обработку ошибок транзакции
+                    billOrderRepository.delete(billOrder);
+                    return new ResponseEntity<BillOrder>(HttpStatus.BAD_REQUEST);
                 }else if (status.equals("failure")){
-                    return new ResponseEntity<Void>(HttpStatus.FORBIDDEN);
+                    billOrderRepository.delete(billOrder);
+                    return new ResponseEntity<BillOrder>(HttpStatus.FORBIDDEN);
                 }else if (status.equals("reversed")){
-                    return new ResponseEntity<Void>(HttpStatus.LOCKED);
+                    billOrderRepository.delete(billOrder);
+                    return new ResponseEntity<BillOrder>(HttpStatus.LOCKED);
                 }
             }
 
-            return new ResponseEntity<Void>(HttpStatus.OK);
+            return new ResponseEntity<BillOrder>(billOrder,HttpStatus.OK);
         }else
         /*
          * В jsonObj.get("order_id") будет лежать id заказа. По этому ID нужно найти order в базе, проверить какой статус пришёл от банка, и если всё ОК,

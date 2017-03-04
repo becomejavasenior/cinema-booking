@@ -3,6 +3,7 @@ package ua.cinemabooking.serviceModel;
 import org.hibernate.validator.constraints.Email;
 
 import javax.validation.constraints.NotNull;
+import java.io.Serializable;
 import java.util.List;
 
 /**
@@ -10,7 +11,7 @@ import java.util.List;
  */
 
 
-public class ClientOrder {
+public class ClientOrder implements Serializable{
 
     @NotNull
     @Email
@@ -32,14 +33,6 @@ public class ClientOrder {
         this.placeIdList = placeIdList;
     }
 
-    public List<Long> getPlaceIdList() {
-        return placeIdList;
-    }
-
-    public void setPlaceIdList(List<Long> placeIdList) {
-        this.placeIdList = placeIdList;
-    }
-
     public String getEmail() {
         return email;
     }
@@ -56,5 +49,11 @@ public class ClientOrder {
         this.seansId = seansId;
     }
 
+    public List<Long> getPlaceIdList() {
+        return placeIdList;
+    }
 
+    public void setPlaceIdList(List<Long> placeIdList) {
+        this.placeIdList = placeIdList;
+    }
 }

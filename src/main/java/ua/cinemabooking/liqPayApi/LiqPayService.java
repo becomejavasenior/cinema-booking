@@ -11,8 +11,8 @@ import java.util.Map;
 @Service
 public class LiqPayService {
 
-    private final String PUBLIC_KEY = "i29966004221";
-    private final String PRIVATE_KEY = "GMQ8uT0sMqU8WRCSrrRXMaskNevyObUusSMxwPhX";
+    private final String PUBLIC_KEY = "i97413489065";
+    private final String PRIVATE_KEY = "xGrC2L4xyGSob0ilvXePTsD52AVxuk8N27hehJPc";
 
     public Map<String, String> liqPayGenerateParamForHtmlForm(Long id, Integer amount) {
 
