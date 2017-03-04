@@ -12,15 +12,17 @@ import java.util.Set;
  */
 @Entity
 public class Place implements Serializable {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private Long id;
     private Integer x;
     private Integer y;
 
-    @ElementCollection(targetClass=HashSet.class)
+    //    @ElementCollection(targetClass=HashSet.class)
+    @ManyToMany(mappedBy = "placeSet")
     private Set<BillOrder> billOrders = new HashSet<>();
 
-    @ManyToMany(mappedBy = "placeSet")
+
     @JsonBackReference
     public Set<BillOrder> getBillOrders() {
         return billOrders;

@@ -73,13 +73,13 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
         ClientOrder order = getClientOrder();
         Seans seans = getSeansById(order.getSeansId());
 //        Place place = getPlaceById(order.getPlaceId());
-        List<Place> placeSet = getPlaceSet(order.getPlaceIdList());
+        List<Place> placeList = getPlaceSet(order.getPlaceIdList());
 
-        when(placeRepository.findAll(anyListOf(Long.class))).thenReturn(placeSet);
+        Set<Place> placeSet = new HashSet<>(placeList);
+        when(placeRepository.findAll(anyListOf(Long.class))).thenReturn(placeList);
         when(seansRepository.findOne(any(Long.class))).thenReturn(seans);
-
-        when(tiketsService.createOrder(seans, order.getEmail(), new HashSet<>(placeSet))).
-                thenReturn(getBillOrderByPlacesAmount(placeSet.size(), seans));
+        BillOrder billOrder = getBillOrderByPlacesAmount(placeList.size(), seans);
+        when(tiketsService.createOrder(seans, order.getEmail(), placeSet)).thenReturn(billOrder);
 
         String uri = "/createOrder";
 
@@ -93,7 +93,7 @@ public class ControllerRestMockitoTest extends AbstractControllerTest {
 
         int status = result.getResponse().getStatus();
 
-        verify(tiketsService, times(1)).createOrder(seans, order.getEmail(), new HashSet<>(placeSet));
+        verify(tiketsService, times(1)).createOrder(seans, order.getEmail(), placeSet);
 
         Assert.assertEquals("failure -> expected status 201 ", 201, status);
         //Assert.assertTrue("failure -> expected content ", content.trim().length() > 0);
